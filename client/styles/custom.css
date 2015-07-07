@@ -1,0 +1,39 @@
+/* --------------- Common --------------- */
+* {
+    font-family: 'Roboto', sans-serif;
+}
+body {
+    background-color: #f3f3f3;
+}
+/* --------------- / Common --------------- */
+
+/* --------------- Header --------------- */
+.navbar-default {
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0px 1px 5px #ddd;
+}
+.navbar-default .menu {
+    display: inline-block;
+    margin: 10px;
+}
+.navbar-default .menu-icon {
+    font-size: 27px;
+    float: left;
+    color: #999;
+}
+.navbar-default .menu-text {
+    float: left;
+    padding: 5px;
+    color: #999;
+}
+.navbar-default #login-buttons {
+    margin: 18px;
+}
+/* --------------- / Header --------------- */
+
+/* --------------- Layout --------------- */
+.layout-content {
+    margin-top: 90px;
+}
+/* --------------- / Layout --------------- */

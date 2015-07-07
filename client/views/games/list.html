@@ -1,0 +1,40 @@
+<template name="gamesList">
+
+    <div class="col col-md-12">
+        <h3>Online Games</h3>
+
+        {{#if gamesCount }}
+            <ul>
+                {{# each games }}
+                    <li><a href="{{pathFor 'play' gameId=this._id}}">{{ title }}</a></li>
+                {{/ each }}
+            </ul>
+        {{ else }}
+            <p>No open games to play. Why don't you create one?</p>
+        {{/if }}
+    </div>
+
+    <div class="col col-md-12">
+        <h3>Create Game</h3>
+
+        {{#if currentUser._id }}
+            <form id="game-create" class="form-inline">
+                <div class="form-group">
+                    <label for="form-create-title">Title</label>
+                    <input type="text" class="form-control" id="form-create-title" placeholder="give it a name!"/>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="form-create-public" checked="checked"> Public Game (anyone can join)
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-default" id="game-create-submit">Create</button>
+            </form>
+        {{ else }}
+            <p>Please login to create a game.</p>
+        {{/ if }}
+    </div>
+
+</template>
