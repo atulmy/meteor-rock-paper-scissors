@@ -12,6 +12,8 @@ Template.gamesList.helpers({
 
 Template.gamesList.events({
     'submit #game-create': function(event, template) {
+        template.$('#game-create-submit').attr('disabled', 'disabled');
+
         var gameTitle = template.$('#form-create-title').val();
         var gameIsPublic = template.$('#form-create-public').is(':checked');
 
@@ -21,6 +23,7 @@ Template.gamesList.events({
             } else {
                 alert(error.reason);
             }
+            template.$('#game-create-submit').removeAttr('disabled');
         });
 
         event.preventDefault();

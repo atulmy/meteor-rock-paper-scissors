@@ -3,38 +3,52 @@
     <div class="col col-md-12">
         <h3>Online Games</h3>
 
-        {{#if gamesCount }}
-            <ul>
+        <div class="list-group">
+            {{#if gamesCount }}
                 {{# each games }}
-                    <li><a href="{{pathFor 'play' gameId=this._id}}">{{ title }}</a></li>
+                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item">
+                        <h4 class="list-group-item-heading">{{ title }}</h4>
+
+                        <p class="list-group-item-text">created by atul</p>
+                    </a>
                 {{/ each }}
-            </ul>
-        {{ else }}
-            <p>No open games to play. Why don't you create one?</p>
-        {{/if }}
+            {{ else }}
+                <div class="list-group-item">
+                    <h4 class="list-group-item-heading">No open games to play. </h4>
+
+                    <p class="list-group-item-text">Why don't you create one?</p>
+                </div>
+            {{/if }}
+        </div>
     </div>
 
     <div class="col col-md-12">
         <h3>Create Game</h3>
 
-        {{#if currentUser._id }}
-            <form id="game-create" class="form-inline">
-                <div class="form-group">
-                    <label for="form-create-title">Title</label>
-                    <input type="text" class="form-control" id="form-create-title" placeholder="give it a name!"/>
-                </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {{#if currentUser._id }}
+                    <form id="game-create">
+                        <div class="form-group">
+                            <label for="form-create-title">Title</label>
+                            <input type="text" class="form-control" id="form-create-title" placeholder="give it a name!"/>
+                        </div>
 
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="form-create-public" checked="checked"> Public Game (anyone can join)
-                    </label>
-                </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="form-create-public" checked="checked"> Public Game (anyone can join)
+                            </label>
+                        </div>
 
-                <button type="submit" class="btn btn-default" id="game-create-submit">Create</button>
-            </form>
-        {{ else }}
-            <p>Please login to create a game.</p>
-        {{/ if }}
+                        <button type="submit" class="btn btn-default" id="game-create-submit">Create</button>
+                    </form>
+                {{ else }}
+                    <p class="mb0">Please login or signup to create a game.</p>
+                {{/ if }}
+            </div>
+        </div>
+
+
     </div>
 
 </template>

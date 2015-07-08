@@ -2,14 +2,19 @@
 
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="col col-sm-4 text-left">
-            <a href="{{pathFor route='home'}}" class="menu">
+            <a href="#" class="menu" title="Show Menu">
                 <span class="menu-icon glyphicon glyphicon-menu-hamburger"></span>
+
                 <span class="menu-text">MENU</span>
             </a>
         </div>
+
         <div class="col col-sm-4 text-center">
-            <img src="/images/logo.small.png" alt="Rock Paper Scissors"/>
+            <a href="{{pathFor route='home'}}" title="Rock Paper Scissors">
+                <img src="/images/logo.small.png" alt="Rock Paper Scissors"/>
+            </a>
         </div>
+
         <div class="col col-sm-4 text-right">{{> loginButtons }}</div>
     </div>
 

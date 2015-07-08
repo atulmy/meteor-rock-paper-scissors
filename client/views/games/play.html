@@ -1,20 +1,50 @@
 <template name="gamesPlay">
 
-    <div class="col col-md-12">
-        <h3>{{ game.title }}</h3>
-        <div class="col col-md-4 text-center">
-            <button type="button" id="button-game-rock">R</button>
-        </div>
-        <div class="col col-md-4 text-center">
-            <button type="button" id="button-game-paper">P</button>
-        </div>
-        <div class="col col-md-4 text-center">
-            <button type="button" id="button-game-scissors">S</button>
-        </div>
+    <div class="col col-sm-12 text-center">
+        <h3 class="text-center">{{ game.title }}</h3>
+
+        <hr/>
     </div>
 
-    <div class="col col-md-12 text-center">
-        <button type="button" id="button-game-finish">Finish</button>
-    </div>
+    {{#if game.playerTwoId }}
+        <div class="col col-sm-12">
+            <div class="col col-sm-4 text-center">
+                <a href="#" id="button-game-rock">
+                    <img src="/images/button-rock.png" />
+                </a>
+
+                <p>ROCK</p>
+            </div>
+
+            <div class="col col-sm-4 text-center">
+                <a href="#" id="button-game-paper">
+                    <img src="/images/button-paper.png" />
+                </a>
+
+                <p>PAPER</p>
+            </div>
+
+            <div class="col col-sm-4 text-center">
+                <a href="#" id="button-game-scissors">
+                    <img src="/images/button-scissors.png" />
+                </a>
+
+                <p>SCISSOR</p>
+            </div>
+        </div>
+
+        <div class="col col-sm-12 text-center">
+            <hr/>
+
+            <button type="button" id="button-game-start" class="btn btn-lg btn-default">Start</button>
+
+            <button type="button" id="button-game-finish" class="btn btn-lg btn-default">Finish</button>
+        </div>
+    {{ else }}
+        <div class="col col-sm-12 text-center">
+            <p>{{> spinner}}</p>
+            <p style="padding-top: 100px;">Waiting for another player to join...</p>
+        </div>
+    {{/ if }}
 
 </template>

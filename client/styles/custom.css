@@ -5,7 +5,22 @@
 body {
     background-color: #f3f3f3;
 }
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-weight: 400;
+}
+label {
+    font-weight: 500;
+}
+hr {
+    border-color: #e6e6e6;
+    box-shadow: 0px 1px 0px #fff;
+}
 /* --------------- / Common --------------- */
+
+/* --------------- Margins and Paddings --------------- */
+.mt20 { margin-top: 20px; }
+.mb0 { margin-bottom: 0px; }
+/* --------------- / Margins and Paddings --------------- */
 
 /* --------------- Header --------------- */
 .navbar-default {
@@ -27,13 +42,21 @@ body {
     padding: 5px;
     color: #999;
 }
-.navbar-default #login-buttons {
+.navbar-default .dropdown-menu {
+    right: 0px;
+    left: auto;
+}
+.navbar-default #login-dropdown-list {
     margin: 18px;
+    list-style: none;
+}
+.navbar-default #login-dropdown-list .btn:hover {
+    color: #fff;
 }
 /* --------------- / Header --------------- */
 
 /* --------------- Layout --------------- */
 .layout-content {
-    margin-top: 90px;
+    margin-top: 100px;
 }
 /* --------------- / Layout --------------- */
