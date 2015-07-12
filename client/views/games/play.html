@@ -4,47 +4,79 @@
         <h3 class="text-center">{{ game.title }}</h3>
 
         <hr/>
+
+        <div class="clearfix">
+            <div class="col col-xs-5 text-right">
+                {{ game.playerOneId }}
+            </div>
+            <div class="col col-xs-2 text-center">
+                vs
+            </div>
+            <div class="col col-xs-5 text-left">
+                {{ game.playerTwoId }}
+            </div>
+        </div>
+        <div class="clearfix">
+            <div class="col col-xs-5 text-right">
+                0 points
+            </div>
+            <div class="col col-xs-2 text-center"></div>
+            <div class="col col-xs-5 text-left">
+                0 points
+            </div>
+        </div>
+
+        <hr/>
     </div>
 
-    {{#if game.playerTwoId }}
-        <div class="col col-sm-12">
-            <div class="col col-sm-4 text-center">
-                <a href="#" id="button-game-rock">
-                    <img src="/images/button-rock.png" />
-                </a>
-
-                <p>ROCK</p>
-            </div>
-
-            <div class="col col-sm-4 text-center">
-                <a href="#" id="button-game-paper">
-                    <img src="/images/button-paper.png" />
-                </a>
-
-                <p>PAPER</p>
-            </div>
-
-            <div class="col col-sm-4 text-center">
-                <a href="#" id="button-game-scissors">
-                    <img src="/images/button-scissors.png" />
-                </a>
-
-                <p>SCISSOR</p>
-            </div>
-        </div>
+    {{#if game.isCompleted }}
 
         <div class="col col-sm-12 text-center">
-            <hr/>
-
-            <button type="button" id="button-game-start" class="btn btn-lg btn-default">Start</button>
-
-            <button type="button" id="button-game-finish" class="btn btn-lg btn-default">Finish</button>
+            <p>Game finished.</p>
         </div>
+
     {{ else }}
-        <div class="col col-sm-12 text-center">
-            <p>{{> spinner}}</p>
-            <p style="padding-top: 100px;">Waiting for another player to join...</p>
-        </div>
+
+        {{#if game.playerTwoId }}
+            <div class="col col-sm-12">
+                <div class="col col-sm-4 text-center">
+                    <a href="javascript:void(0);" class="button-game" selection="rock">
+                        <img src="/images/button-rock.png" />
+                    </a>
+
+                    <p>ROCK</p>
+                </div>
+
+                <div class="col col-sm-4 text-center">
+                    <a href="javascript:void(0);" class="button-game" selection="paper">
+                        <img src="/images/button-paper.png" />
+                    </a>
+
+                    <p>PAPER</p>
+                </div>
+
+                <div class="col col-sm-4 text-center">
+                    <a href="javascript:void(0);" class="button-game" selection="scissors">
+                        <img src="/images/button-scissors.png" />
+                    </a>
+
+                    <p>SCISSOR</p>
+                </div>
+            </div>
+
+            <div class="col col-sm-12 text-center">
+                <hr/>
+
+                <button type="button" id="button-game-finish" class="btn btn-default">Finish</button>
+            </div>
+        {{ else }}
+            <div class="col col-sm-12 text-center">
+                <p>{{> spinner}}</p>
+                <p style="padding-top: 110px;">Waiting for another player to join...</p>
+                <p>Share this URL: {{ currentUrl }}</p>
+            </div>
+        {{/ if }}
+
     {{/ if }}
 
 </template>

@@ -14,19 +14,24 @@ Games.allow({
 });
 
 Meteor.methods({
-    gameInsert: function(gameTitle, gameIsPublic){
+    gameInsert: function(gameTitle, gameIsPublic, gameBestOf){
         // check user signed in
         check(Meteor.userId(), String);
 
         // validate data
         check(gameTitle, String);
         check(gameIsPublic, Boolean);
+        check(gameBestOf, Number);
 
         // create game document (object)
         var game = {
             title: gameTitle,
             playerOneId: Meteor.userId(),
+            playerOneScore: 0,
             playerTwoId: "",
+            playerTwoScore: 0,
+            bestOf: gameBestOf,
+            winnerId: "",
             isInProgress: false,
             isCompleted: false,
             isPublic: gameIsPublic
@@ -39,10 +44,23 @@ Meteor.methods({
     },
 
     gameSetInProgress: function(gameId) {
-        // check user signed in
+        // validate data
         check(gameId, String);
         check(Meteor.userId(), String);
 
         Games.update(gameId, {$set: {playerTwoId: Meteor.userId(), isInProgress: true, isPublic: false}});
+    },
+
+    gameMarkCompleted: function(gameId) {
+        // validate data
+        check(gameId, String);
+        check(Meteor.userId(), String);
+
+        Games.update(gameId, {$set: {isCompleted: true, isInProgress: false}});
+    },
+
+    gameUpdateScore: function(gameId, setNumber, playerOneResult, playerTwoResult) {
+        var scores = {setNumber: setNumber, playerOneResult: Boolean(playerOneResult), playerTwoResult: Boolean(playerTwoResult)};
+        return Games.update(gameId, {$addToSet: {scores: scores}});
     }
 });

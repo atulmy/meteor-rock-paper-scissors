@@ -31,21 +31,19 @@ Router.route('/play/:gameId', {
     waitOn: function() {
         return Meteor.subscribe('games');
     },
-    onRun: function(){
-        var userId = Meteor.userId();
-        var gameId = Router.current().params.gameId;
-        var game = Games.findOne({_id: gameId});
-        if(game) {
-            if(game.playerOneId !== userId) {
-                Meteor.call('gameSetInProgress', game._id, function(error, response) {
-                    if(error) {
-                        alert(error.reason);
-                    }
-                });
-            }
-        } else {
-            Router.go('home');
-        }
+    onBeforeAction: function() {
+        Session.set('gameId', this.params.gameId);
+        console.log('game id set '+Session.get('gameId'));
         this.next();
+    },
+    onStop: function() {
+        console.log('stop '+Session.get('gameId'));
+        /*
+        Meteor.call('gameMarkCompleted', Session.get('gameId'), function(error, response) {
+            if(error) {
+                alert(error.reason);
+            }
+        });
+        */
     }
 });

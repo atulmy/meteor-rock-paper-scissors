@@ -22,6 +22,10 @@ hr {
 .list-group-item-text {
     color: #666;
 }
+.form-group .btn-group {
+    display: block;
+    clear: both;
+}
 /* --------------- / Bootstrap Overrides --------------- */
 
 /* --------------- Margins and Paddings --------------- */
