@@ -1,28 +1,6 @@
 <template name="gamesList">
 
     <div class="col col-md-12">
-        <h3>Online Games</h3>
-
-        <div class="list-group">
-            {{#if gamesCount }}
-                {{# each games }}
-                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
-                        <h4 class="list-group-item-heading">{{ title }}</h4>
-
-                        <p class="list-group-item-text">Created by {{ playerOneId }} &bull; Best of {{ bestOf }}</p>
-                    </a>
-                {{/ each }}
-            {{ else }}
-                <div class="list-group-item">
-                    <h4 class="list-group-item-heading">No open games to play. </h4>
-
-                    <p class="list-group-item-text">Why don't you create one?</p>
-                </div>
-            {{/if }}
-        </div>
-    </div>
-
-    <div class="col col-md-12">
         <h3>Create Game</h3>
 
         <div class="panel panel-default">
@@ -35,7 +13,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="form-create-title">Set of</label>
+                            <label for="form-create-bestof">Best of</label>
                             <div class="btn-group clearfix" data-toggle="buttons">
                                 <div class="btn btn-default active">
                                     <input type="radio" class="form-create-bestof" name="setof" value="3" autocomplete="off" checked="checked"> 3
@@ -65,8 +43,49 @@
                 {{/ if }}
             </div>
         </div>
-
-
     </div>
+
+    <div class="col col-md-12">
+        <h3>Online Games</h3>
+
+        <div class="list-group">
+            {{#if gamesCount }}
+                {{# each games }}
+                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
+                        <h4 class="list-group-item-heading">{{ title }}</h4>
+
+                        <p class="list-group-item-text">Created by {{ playerOne.name }} &bull; Best of {{ bestOf }}</p>
+                    </a>
+                {{/ each }}
+            {{ else }}
+                <div class="list-group-item">
+                    <h4 class="list-group-item-heading">No open games to play. </h4>
+
+                    <p class="list-group-item-text">Why don't you create one?</p>
+                </div>
+            {{/if }}
+        </div>
+    </div>
+
+
+    {{#if gamesFinishedCount }}
+        <div class="col col-md-12">
+            <h3>Finished Games</h3>
+
+            <div class="list-group">
+                {{# each gamesFinished }}
+                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
+                        <h4 class="list-group-item-heading">{{ title }}</h4>
+
+                        <p class="list-group-item-text">
+                            Created by {{ playerOne.name }} &bull;
+                            Best of {{ bestOf }} &bull;
+                            {{ playerOne.name }} [{{ playerOne.score }}] vs {{ playerTwo.name }} [{{ playerTwo.score }}]
+                        </p>
+                    </a>
+                {{/ each }}
+            </div>
+        </div>
+    {{/if }}
 
 </template>

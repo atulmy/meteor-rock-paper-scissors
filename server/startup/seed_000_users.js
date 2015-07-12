@@ -1,4 +1,5 @@
 Meteor.startup(function() {
+    /*
     var seedUserEmail = 'seed@example.com';
 
     if (Meteor.users.find({"emails.address": seedUserEmail}).count() == 0){
@@ -7,4 +8,5 @@ Meteor.startup(function() {
             password: '123456'
         });
     }
+    */
 });

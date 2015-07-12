@@ -20,26 +20,34 @@ var sets = new SimpleSchema({
     }
 });
 
+var playerInfo = new SimpleSchema({
+    id: {
+        type: String
+    },
+    name: {
+        type: String
+    },
+    score: {
+        type: Number
+    }
+});
+
 Games.attachSchema(new SimpleSchema({
     title: {
         type: String
     },
 
-    playerOneId: {
-        type: String
+    playerOne: {
+        type: playerInfo
     },
 
-    playerOneScore: {
-        type: Number
-    },
-
-    playerTwoId: {
-        type: String,
+    playerTwo: {
+        type: playerInfo,
         optional: true
     },
 
-    playerTwoScore: {
-        type: Number,
+    winner: {
+        type: playerInfo,
         optional: true
     },
 
@@ -47,13 +55,12 @@ Games.attachSchema(new SimpleSchema({
         type: Number
     },
 
-    scores: {
-        type: [sets],
-        optional: true
+    currentSet: {
+        type: Number
     },
 
-    winnerId: {
-        type: String,
+    scores: {
+        type: [sets],
         optional: true
     },
 

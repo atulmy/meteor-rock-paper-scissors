@@ -70,4 +70,8 @@ hr {
 .layout-content {
     margin-top: 100px;
 }
+.button-game {
+    display: block;
+    cursor: pointer;
+}
 /* --------------- / Layout --------------- */

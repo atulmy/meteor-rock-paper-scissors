@@ -2,27 +2,28 @@
 
     <div class="col col-sm-12 text-center">
         <h3 class="text-center">{{ game.title }}</h3>
+        <p>Best of {{ game.bestOf }}</p>
 
         <hr/>
 
         <div class="clearfix">
             <div class="col col-xs-5 text-right">
-                {{ game.playerOneId }}
+                {{ game.playerOne.name }}
             </div>
             <div class="col col-xs-2 text-center">
                 vs
             </div>
             <div class="col col-xs-5 text-left">
-                {{ game.playerTwoId }}
+                {{ game.playerTwo.name }}
             </div>
         </div>
         <div class="clearfix">
             <div class="col col-xs-5 text-right">
-                0 points
+                {{ game.playerOne.score }} points
             </div>
             <div class="col col-xs-2 text-center"></div>
             <div class="col col-xs-5 text-left">
-                0 points
+                {{ game.playerTwo.score }} points
             </div>
         </div>
 
@@ -37,10 +38,10 @@
 
     {{ else }}
 
-        {{#if game.playerTwoId }}
+        {{#if notEqualTo game.playerTwo.id "0" }}
             <div class="col col-sm-12">
                 <div class="col col-sm-4 text-center">
-                    <a href="javascript:void(0);" class="button-game" selection="rock">
+                    <a href="javascript:void(0);" class="button-game" selection="rock" title="Rock">
                         <img src="/images/button-rock.png" />
                     </a>
 
@@ -48,7 +49,7 @@
                 </div>
 
                 <div class="col col-sm-4 text-center">
-                    <a href="javascript:void(0);" class="button-game" selection="paper">
+                    <a href="javascript:void(0);" class="button-game" selection="paper" title="Paper">
                         <img src="/images/button-paper.png" />
                     </a>
 
@@ -56,23 +57,25 @@
                 </div>
 
                 <div class="col col-sm-4 text-center">
-                    <a href="javascript:void(0);" class="button-game" selection="scissors">
+                    <a href="javascript:void(0);" class="button-game" selection="scissors" title="Scissors">
                         <img src="/images/button-scissors.png" />
                     </a>
 
-                    <p>SCISSOR</p>
+                    <p>SCISSORS</p>
                 </div>
             </div>
 
             <div class="col col-sm-12 text-center">
                 <hr/>
 
-                <button type="button" id="button-game-finish" class="btn btn-default">Finish</button>
+                <button type="button" class="btn btn-default button-finish">Finish</button>
             </div>
         {{ else }}
             <div class="col col-sm-12 text-center">
                 <p>{{> spinner}}</p>
+
                 <p style="padding-top: 110px;">Waiting for another player to join...</p>
+
                 <p>Share this URL: {{ currentUrl }}</p>
             </div>
         {{/ if }}

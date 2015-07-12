@@ -1,4 +1,5 @@
 Meteor.startup(function() {
+    /*
     var seedUserEmail = 'seed@example.com';
 
     if(Games.find().count() === 0) {
@@ -32,4 +33,5 @@ Meteor.startup(function() {
             Games.insert(team);
         });
     }
+    */
 });

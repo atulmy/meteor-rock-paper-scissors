@@ -19,17 +19,23 @@ Template.gamesPlay.events({
         if(game) {
             var selection = template.$(event.currentTarget).attr('selection');
             console.log(selection);
-            /*
-            var setNumber = 1;
-            var playerOneResult = true;
-            var playerTwoResult = false;
-            Meteor.call('gameUpdateScore', game._id, setNumber, playerOneResult, playerTwoResult, function (error, response) {
+            Meteor.call('gameUpdateScore', game, selection, function (error, response) {
                 console.log('response '+response);
                 if (!error) {
 
                 }
             });
-            */
+
+        }
+    },
+    'click .button-finish': function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            Meteor.call('gameMarkCompleted', game._id, function (error, response) {
+                if (error) {
+                    alert(error.reason);
+                }
+            });
         }
     }
 });
@@ -38,7 +44,7 @@ Template.gamesPlay.rendered = function () {
     var userId = Meteor.userId();
     var game = Games.findOne({_id: Session.get('gameId')});
     if(game) {
-        if(game.playerOneId !== userId && game.isInProgress !== true) {
+        if(game.playerOne.id !== userId && game.isInProgress !== true) {
             Meteor.call('gameSetInProgress', game._id, function(error, response) {
                 if(!error) {
 

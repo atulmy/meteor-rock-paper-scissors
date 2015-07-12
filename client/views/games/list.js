@@ -5,8 +5,15 @@ Template.gamesList.helpers({
     games: function() {
         return Games.find({isPublic: true}, {sort: {createdAt: -1}, limit : 5});
     },
+    gamesFinished: function() {
+        return Games.find({isCompleted: true}, {sort: {createdAt: -1}, limit : 5});
+    },
     gamesCount: function() {
         return Games.find({isPublic: true}, {sort: {createdAt: -1}, limit : 5}).count();
+    },
+
+    gamesFinishedCount: function() {
+        return Games.find({isCompleted: true}, {sort: {createdAt: -1}, limit : 5}).count();
     }
 });
 
