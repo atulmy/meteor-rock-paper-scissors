@@ -31,6 +31,7 @@ Meteor.methods({
             bestOf: gameBestOf,
             currentSet: 0,
             winnerId: "",
+            intervalValue: 0,
             isInProgress: false,
             isCompleted: false,
             isPublic: gameIsPublic
@@ -100,6 +101,11 @@ Meteor.methods({
                 Games.update(game._id, {$inc: {"playerTwo.score": 1}});
             }
         }
-        return Games.update(game._id, {$set: {currentSet: updateCurrentSet, scores: scores}});
+        Games.update(game._id, {$set: {currentSet: updateCurrentSet, scores: scores}});
+        return updateCurrentSet;
+    },
+
+    gameUpdateIntervalValue: function(gameId, count) {
+        Games.update(gameId, {$set: {intervalValue: count}});
     }
 });

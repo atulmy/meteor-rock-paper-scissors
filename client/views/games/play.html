@@ -43,6 +43,7 @@
     {{ else }}
 
         {{#if notEqualTo game.playerTwo.id "0" }}
+
             <div class="col col-sm-12">
                 <div class="col col-sm-4 text-center">
                     <a href="javascript:void(0);" class="button-game" selection="rock" title="Rock">
@@ -84,6 +85,12 @@
             </div>
         {{/ if }}
 
+    {{/ if }}
+
+    {{#if showGameOverlay }}
+        <div id="game-overlay">
+            {{ getIntervalText }}
+        </div>
     {{/ if }}
 
 </template>

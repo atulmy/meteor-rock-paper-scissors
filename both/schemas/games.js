@@ -64,6 +64,10 @@ Games.attachSchema(new SimpleSchema({
         optional: true
     },
 
+    intervalValue: {
+        type: Number
+    },
+
     isInProgress: {
         type: Boolean
     },

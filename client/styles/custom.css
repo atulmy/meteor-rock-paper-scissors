@@ -76,10 +76,24 @@ strong {
 
 /* --------------- Layout --------------- */
 .layout-content {
-    margin-top: 90px;
+
 }
 .button-game {
     display: block;
     cursor: pointer;
+}
+#game-overlay {
+    z-index: 99999;
+    background-color: #fff;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    text-align: center;
+    color: #333;
+    padding-top: 13%;
+    font-size: 4em;
 }
 /* --------------- / Layout --------------- */
