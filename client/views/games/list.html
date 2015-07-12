@@ -54,7 +54,7 @@
                     <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
                         <h4 class="list-group-item-heading">{{ title }}</h4>
 
-                        <p class="list-group-item-text">Created by {{ playerOne.name }} &bull; Best of {{ bestOf }}</p>
+                        <p class="list-group-item-text">Created by <span class="text-underline">{{ playerOne.name }}</span> &bull; Best of {{ bestOf }}</p>
                     </a>
                 {{/ each }}
             {{ else }}
@@ -78,9 +78,10 @@
                         <h4 class="list-group-item-heading">{{ title }}</h4>
 
                         <p class="list-group-item-text">
-                            Created by {{ playerOne.name }} &bull;
+                            Created by <span class="text-underline">{{ playerOne.name }}</span> &bull;
                             Best of {{ bestOf }} &bull;
-                            {{ playerOne.name }} [{{ playerOne.score }}] vs {{ playerTwo.name }} [{{ playerTwo.score }}]
+                            <span class="text-underline">{{ playerOne.name }}</span> vs. <span class="text-underline">{{ playerTwo.name }}</span> &bull;
+                            Score: {{ playerOne.score }} / {{ playerTwo.score }}
                         </p>
                     </a>
                 {{/ each }}

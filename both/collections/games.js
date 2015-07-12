@@ -51,11 +51,14 @@ Meteor.methods({
     },
 
     gameMarkCompleted: function(gameId) {
-        // validate data
-        check(gameId, String);
-        check(Meteor.userId(), String);
+        var game = Games.findOne({_id: gameId});
+        if(game && game.isCompleted === false && game.isInProgress === true) {
+            // validate data
+            check(gameId, String);
+            check(Meteor.userId(), String);
 
-        Games.update(gameId, {$set: {isCompleted: true, isInProgress: false}});
+            Games.update(gameId, {$set: {isCompleted: true, isInProgress: false}});
+        }
     },
 
     gameUpdateScore: function(game, playerSelection) {

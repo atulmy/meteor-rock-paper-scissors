@@ -1,9 +1,13 @@
 /* --------------- Common --------------- */
 * {
     font-family: 'Roboto', sans-serif;
+    border-radius: 0px !important;
 }
 body {
     background-color: #f3f3f3;
+}
+.text-underline {
+    text-decoration: underline;
 }
 /* --------------- / Common --------------- */
 
@@ -19,8 +23,11 @@ hr {
     border-color: #e6e6e6;
     box-shadow: 0px 1px 0px #fff;
 }
+strong {
+    font-weight: 500;
+}
 .list-group-item-text {
-    color: #666;
+    color: #777;
 }
 .form-group .btn-group {
     display: block;
@@ -31,6 +38,7 @@ hr {
 /* --------------- Margins and Paddings --------------- */
 .mt20 { margin-top: 20px; }
 .mb0 { margin-bottom: 0px; }
+.pb0 { padding-bottom: 0px; }
 /* --------------- / Margins and Paddings --------------- */
 
 /* --------------- Header --------------- */
@@ -68,7 +76,7 @@ hr {
 
 /* --------------- Layout --------------- */
 .layout-content {
-    margin-top: 100px;
+    margin-top: 90px;
 }
 .button-game {
     display: block;

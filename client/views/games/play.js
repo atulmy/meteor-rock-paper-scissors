@@ -1,18 +1,47 @@
-var timer = 0;
+// Helpers
 Template.gamesPlay.helpers({
     currentUrl: function(){
         return 'http://'+window.location.host+Router.current().url;
     },
     game: function() {
-        var gameId = Session.get('gameId');
-        var game = Games.findOne({_id: gameId});
-        return game;
+        return Games.findOne({_id: Session.get('gameId')});
     },
-    gameCountdown: function() {
-        return timer;
+    winnerName: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            if(game.playerOne.score > game.playerTwo.score) {
+                return 'Winner: '+game.playerOne.name;
+            } else if(game.playerTwo.score > game.playerOne.score) {
+                return 'Winner: '+game.playerTwo.name;
+            } else {
+                return "Its a draw. You <strong>must</strong> challenge again!";
+            }
+        }
+        return '';
+    },
+    playerOnePointText: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            if(game.playerOne.score === 1) {
+                return 'point';
+            } else {
+                return 'points';
+            }
+        }
+    },
+    playerTwoPointText: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            if(game.playerTwo.score === 1) {
+                return 'point';
+            } else {
+                return 'points';
+            }
+        }
     }
 });
 
+// Events
 Template.gamesPlay.events({
     'click .button-game': function(event, template) {
         var game = Games.findOne({_id: Session.get('gameId')});
@@ -25,7 +54,6 @@ Template.gamesPlay.events({
 
                 }
             });
-
         }
     },
     'click .button-finish': function() {
@@ -40,6 +68,7 @@ Template.gamesPlay.events({
     }
 });
 
+// On Render
 Template.gamesPlay.rendered = function () {
     var userId = Meteor.userId();
     var game = Games.findOne({_id: Session.get('gameId')});
