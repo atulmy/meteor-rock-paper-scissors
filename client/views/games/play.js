@@ -46,7 +46,7 @@ Template.gamesPlay.helpers({
         var intervalText = '';
         var game = Games.findOne({_id: Session.get('gameId')});
         if(game) {
-            switch(game.intervalValue % 3) {
+            switch(game.current.interval % 3) {
                 case 0:
                     intervalText = 'rock';
                     break;
@@ -63,7 +63,7 @@ Template.gamesPlay.helpers({
     showGameOverlay: function() {
         var game = Games.findOne({_id: Session.get('gameId')});
         if(game) {
-            return (game.intervalValue > 0);
+            return (game.current.interval > 0);
         }
         return false;
     }
@@ -74,10 +74,10 @@ Template.gamesPlay.events({
     'click .button-game': function(event, template) {
         var game = Games.findOne({_id: Session.get('gameId')});
         if(game) {
-            var currentSet = game.currentSet;
+            var currentSet = game.current.set;
             var selection = template.$(event.currentTarget).attr('selection');
             console.log(selection);
-            Meteor.call('gameUpdateScore', game, selection, function (error, response) {
+            Meteor.call('gameAddSet', game, selection, function (error, response) {
                 console.log('response '+response);
                 if (!error) {
                     if(response != currentSet) {
@@ -85,7 +85,7 @@ Template.gamesPlay.events({
                         interval = setInterval(function () {
                             if (count >= 0) {
                                 //$('#game-overlay').show().fadeOut();
-                                Meteor.call('gameUpdateIntervalValue', game._id, count, function (error, response) {
+                                Meteor.call('gameUpdateCurrentInterval', game._id, count, function (error, response) {
 
                                 });
                                 count--;
@@ -99,7 +99,8 @@ Template.gamesPlay.events({
     'click .button-finish': function() {
         var game = Games.findOne({_id: Session.get('gameId')});
         if(game) {
-            Meteor.call('gameMarkCompleted', game._id, function (error, response) {
+            // mark game completed
+            Meteor.call('gameUpdateIsCompletedAndIsPlaying', game._id, function (error, response) {
                 if (error) {
                     alert(error.reason);
                 } else {
@@ -115,8 +116,10 @@ Template.gamesPlay.rendered = function () {
     var userId = Meteor.userId();
     var game = Games.findOne({_id: Session.get('gameId')});
     if(game) {
-        if(game.playerOne.id !== userId && game.isInProgress !== true) {
-            Meteor.call('gameSetInProgress', game._id, function(error, response) {
+        if(game.playerOne.id !== userId && game.is.completed === false && game.is.playing !== true) {
+
+            // Start game
+            Meteor.call('gameUpdateIsPlaying', game._id, function(error, response) {
                 if(!error) {
                     var count = 3;
                     interval = setInterval(function() {

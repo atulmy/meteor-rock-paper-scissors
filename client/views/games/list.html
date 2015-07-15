@@ -1,75 +1,39 @@
 <template name="gamesList">
 
-    <div class="col col-md-12">
-        <h3>Create Game</h3>
+    <div class="col col-md-4">
+        <div class="col col-md-12">
+            <h3>Online Games</h3>
 
-        <div class="panel panel-default">
-            <div class="panel-body">
-                {{#if currentUser._id }}
-                    <form id="game-create">
-                        <div class="form-group">
-                            <label for="form-create-title">Title</label>
-                            <input type="text" class="form-control" id="form-create-title" placeholder="give it a name!"/>
-                        </div>
+            <div class="list-group">
+                {{#if gamesCount }}
+                    {{# each games }}
+                        <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
+                            <h4 class="list-group-item-heading">{{ title }}</h4>
 
-                        <div class="form-group">
-                            <label for="form-create-bestof">Best of</label>
-                            <div class="btn-group clearfix" data-toggle="buttons">
-                                <div class="btn btn-default active">
-                                    <input type="radio" class="form-create-bestof" name="setof" value="3" autocomplete="off" checked="checked"> 3
-                                </div>
-                                <div class="btn btn-default">
-                                    <input type="radio" class="form-create-bestof" name="setof" value="5" autocomplete="off"> 5
-                                </div>
-                                <div class="btn btn-default">
-                                    <input type="radio" class="form-create-bestof" name="setof" value="7" autocomplete="off"> 7
-                                </div>
-                                <div class="btn btn-default">
-                                    <input type="radio" class="form-create-bestof" name="setof" value="0" autocomplete="off"> Indefinite
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" id="form-create-public" checked="checked"> Public Game (anyone can join)
-                            </label>
-                        </div>
-
-                        <button type="submit" class="btn btn-default" id="game-create-submit" title="Create new game">Create</button>
-                    </form>
+                            <p class="list-group-item-text">Created by <span class="text-underline">{{ playerOne.name }}</span> &bull; Best of {{ bestOf }}</p>
+                        </a>
+                    {{/ each }}
                 {{ else }}
-                    <p class="mb0">Please login or signup to create a game.</p>
-                {{/ if }}
+                    <div class="list-group-item">
+                        <h4 class="list-group-item-heading">No open games to play. </h4>
+
+                        <p class="list-group-item-text">Why don't you create one?</p>
+                    </div>
+                {{/if }}
             </div>
         </div>
+
+        {{#if lessThan gamesCount 5 }}
+            <div class="col col-md-12">
+
+                {{> gamesCreate }}
+
+            </div>
+        {{/if }}
     </div>
-
-    <div class="col col-md-12">
-        <h3>Online Games</h3>
-
-        <div class="list-group">
-            {{#if gamesCount }}
-                {{# each games }}
-                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
-                        <h4 class="list-group-item-heading">{{ title }}</h4>
-
-                        <p class="list-group-item-text">Created by <span class="text-underline">{{ playerOne.name }}</span> &bull; Best of {{ bestOf }}</p>
-                    </a>
-                {{/ each }}
-            {{ else }}
-                <div class="list-group-item">
-                    <h4 class="list-group-item-heading">No open games to play. </h4>
-
-                    <p class="list-group-item-text">Why don't you create one?</p>
-                </div>
-            {{/if }}
-        </div>
-    </div>
-
 
     {{#if gamesFinishedCount }}
-        <div class="col col-md-12">
+        <div class="col col-md-4">
             <h3>Finished Games</h3>
 
             <div class="list-group">
@@ -78,15 +42,38 @@
                         <h4 class="list-group-item-heading">{{ title }}</h4>
 
                         <p class="list-group-item-text">
-                            Created by <span class="text-underline">{{ playerOne.name }}</span> &bull;
-                            Best of {{ bestOf }} &bull;
                             <span class="text-underline">{{ playerOne.name }}</span> vs. <span class="text-underline">{{ playerTwo.name }}</span> &bull;
+                            Best of {{ bestOf }} &bull;
                             Score: {{ playerOne.score }} / {{ playerTwo.score }}
                         </p>
                     </a>
                 {{/ each }}
             </div>
         </div>
+    {{/if }}
+
+    {{#if gamesPlayingCount }}
+        <div class="col col-md-4">
+            <h3>Ongoing Games</h3>
+
+            <div class="list-group">
+                {{# each gamesPlaying }}
+                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
+                        <h4 class="list-group-item-heading">{{ title }}</h4>
+
+                        <p class="list-group-item-text">
+                            <span class="text-underline">{{ playerOne.name }}</span> vs. <span class="text-underline">{{ playerTwo.name }}</span> &bull;
+                            Best of {{ bestOf }} &bull;
+                            Live Score: {{ playerOne.score }} / {{ playerTwo.score }}
+                        </p>
+                    </a>
+                {{/ each }}
+            </div>
+        </div>
+    {{/if }}
+
+    {{#if greaterThanOrEqualTo gamesCount 5 }}
+        <a href="javascript:void(0);" class="create-game glyphicon glyphicon-plus transition transition-grow" title="Create a game"></a>
     {{/if }}
 
 </template>

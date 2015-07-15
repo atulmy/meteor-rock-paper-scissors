@@ -1,4 +1,16 @@
-var sets = new SimpleSchema({
+var playerInfo = new SimpleSchema({
+    id: {
+        type: String
+    },
+    name: {
+        type: String
+    },
+    score: {
+        type: Number
+    }
+});
+
+var set = new SimpleSchema({
     setNumber: {
         type: Number,
         optional: true
@@ -20,15 +32,27 @@ var sets = new SimpleSchema({
     }
 });
 
-var playerInfo = new SimpleSchema({
-    id: {
-        type: String
-    },
-    name: {
-        type: String
-    },
-    score: {
+var current = new SimpleSchema({
+    set: {
         type: Number
+    },
+
+    interval: {
+        type: Number
+    }
+});
+
+var is = new SimpleSchema({
+    playing: {
+        type: Boolean
+    },
+
+    completed: {
+        type: Boolean
+    },
+
+    public: {
+        type: Boolean
     }
 });
 
@@ -55,29 +79,18 @@ Games.attachSchema(new SimpleSchema({
         type: Number
     },
 
-    currentSet: {
-        type: Number
-    },
-
-    scores: {
-        type: [sets],
+    sets: {
+        type: [set],
         optional: true
     },
 
-    intervalValue: {
-        type: Number
+    current: {
+        type: current,
+        optional: true
     },
 
-    isInProgress: {
-        type: Boolean
-    },
-
-    isCompleted: {
-        type: Boolean
-    },
-
-    isPublic: {
-        type: Boolean
+    is: {
+        type: is
     },
 
     createdAt: {

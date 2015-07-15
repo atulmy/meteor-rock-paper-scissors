@@ -96,4 +96,30 @@ strong {
     padding-top: 13%;
     font-size: 4em;
 }
+.create-game {
+    right: 30px;
+    position: fixed;
+    top: auto;
+    background-color: #fff;
+    border-collapse: collapse;
+    border-radius: 50px ! important;
+    bottom: 30px;
+    box-shadow: 0px 0px 5px #aaa;
+    text-decoration: none;
+    font-size: 1.5em;
+    padding: 15px;
+    cursor: pointer;
+}
+.create-game:hover {
+    text-decoration: none;
+}
 /* --------------- / Layout --------------- */
+
+/* --------------- Animations --------------- */
+.transition { transition:all 0.2s ease; }
+.transition-grow:hover {
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+}
+/* --------------- / Animations --------------- */

@@ -38,7 +38,7 @@ Router.route('/play/:gameId', {
     },
     onStop: function() {
         console.log('stop '+Session.get('gameId'));
-        Meteor.call('gameMarkCompleted', Session.get('gameId'), function(error, response) {
+        Meteor.call('gameUpdateIsCompletedAndIsPlaying', Session.get('gameId'), function(error, response) {
             if(error) {
                 alert(error.reason);
             }

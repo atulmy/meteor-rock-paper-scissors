@@ -2,26 +2,28 @@ Games = new Mongo.Collection('games');
 
 Games.allow({
     insert: function (userId, doc) {
-        return (userId && doc.ownerId === userId);
+        return (userId && doc.playerOne.id === userId);
     },
     update: function (userId, doc, fields, modifier) {
-        return doc.ownerId === userId;
+        return doc.playerOne.id === userId;
     },
     remove: function (userId, doc) {
-        return doc.ownerId === userId;
+        return doc.playerOne.id === userId;
     },
-    fetch: ['ownerId']
+    fetch: ['playerOne.id']
 });
 
 Meteor.methods({
-    gameInsert: function(gameTitle, gameIsPublic, gameBestOf){
+
+    // add new game
+    gameInsert: function(gameTitle, gameBestOf, gameIsPublic){
         // check user signed in
         check(Meteor.userId(), String);
 
         // validate data
         check(gameTitle, String);
-        check(gameIsPublic, Boolean);
-        check(gameBestOf, Number);
+        check(gameBestOf, Number)
+        check(gameIsPublic, Boolean);;
 
         // create game document (object)
         var game = {
@@ -29,12 +31,8 @@ Meteor.methods({
             playerOne: {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0},
             playerTwo: {id: "0", name: "Waiting for player...", score: 0},
             bestOf: gameBestOf,
-            currentSet: 0,
-            winnerId: "",
-            intervalValue: 0,
-            isInProgress: false,
-            isCompleted: false,
-            isPublic: gameIsPublic
+            current: {set: 0, interval: 0},
+            is: {playing: false, completed: false, public: gameIsPublic}
         };
 
         // insert new game
@@ -43,69 +41,77 @@ Meteor.methods({
         return gameId;
     },
 
-    gameSetInProgress: function(gameId) {
+    // start game
+    gameUpdateIsPlaying: function(gameId) {
         // validate data
         check(gameId, String);
         check(Meteor.userId(), String);
 
-        Games.update(gameId, {$set: {playerTwo: {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0}, isInProgress: true, isPublic: false}});
+        Games.update(gameId, {$set: {
+            playerTwo: {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0},
+            "is.playing": true
+        }});
     },
 
-    gameMarkCompleted: function(gameId) {
-        var game = Games.findOne({_id: gameId});
-        if(game && game.isCompleted === false && game.isInProgress === true) {
-            // validate data
-            check(gameId, String);
-            check(Meteor.userId(), String);
+    // called after choosing object (rock / paper / scissor) for both the user
+    gameAddSet: function(game, playerSelection) {
+        var sets = game.sets;
 
-            Games.update(gameId, {$set: {isCompleted: true, isInProgress: false}});
-        }
-    },
-
-    gameUpdateScore: function(game, playerSelection) {
-        //console.log(game);
-        var scores = game.scores;
-        console.log(scores);
-        var currentSet = game.currentSet;
+        var currentSet = game.current.set;
         var updateCurrentSet = currentSet;
-        if(!scores) {
-            scores = [];
-            scores[currentSet] = {setNumber: currentSet};
+        if(!sets) {
+            sets = [];
+            sets[currentSet] = {setNumber: currentSet};
         } else {
-            if(typeof scores[currentSet] === 'undefined') {
-                scores[currentSet] = {setNumber: currentSet};
+            if(typeof sets[currentSet] === 'undefined') {
+                sets[currentSet] = {setNumber: currentSet};
             }
         }
+
         if(game.playerOne.id === Meteor.userId()) {
-            if(typeof scores[currentSet].playerOneSelection === 'undefined') {
-                scores[currentSet].playerOneSelection = playerSelection;
+            if(typeof sets[currentSet].playerOneSelection === 'undefined') {
+                sets[currentSet].playerOneSelection = playerSelection;
             }
         } else {
-            if(typeof scores[currentSet].playerTwoSelection === 'undefined') {
-                scores[currentSet].playerTwoSelection = playerSelection;
+            if(typeof sets[currentSet].playerTwoSelection === 'undefined') {
+                sets[currentSet].playerTwoSelection = playerSelection;
             }
         }
-        if(typeof scores[currentSet].playerOneSelection !== 'undefined' && typeof scores[currentSet].playerTwoSelection !== 'undefined') {
+
+        if(typeof sets[currentSet].playerOneSelection !== 'undefined' && typeof sets[currentSet].playerTwoSelection !== 'undefined') {
             updateCurrentSet++;
             if(
-                scores[currentSet].playerOneSelection === 'scissors' && scores[currentSet].playerTwoSelection === 'paper' ||
-                scores[currentSet].playerOneSelection === 'paper' && scores[currentSet].playerTwoSelection === 'rock' ||
-                scores[currentSet].playerOneSelection === 'rock' && scores[currentSet].playerTwoSelection === 'scissors'
+                sets[currentSet].playerOneSelection === 'scissors' && sets[currentSet].playerTwoSelection === 'paper' ||
+                sets[currentSet].playerOneSelection === 'paper' && sets[currentSet].playerTwoSelection === 'rock' ||
+                sets[currentSet].playerOneSelection === 'rock' && sets[currentSet].playerTwoSelection === 'scissors'
             ) {
                 Games.update(game._id, {$inc: {"playerOne.score": 1}});
             } else if(
-                scores[currentSet].playerTwoSelection === 'scissors' && scores[currentSet].playerOneSelection === 'paper' ||
-                scores[currentSet].playerTwoSelection === 'paper' && scores[currentSet].playerOneSelection === 'rock' ||
-                scores[currentSet].playerTwoSelection === 'rock' && scores[currentSet].playerOneSelection === 'scissors'
+                sets[currentSet].playerTwoSelection === 'scissors' && sets[currentSet].playerOneSelection === 'paper' ||
+                sets[currentSet].playerTwoSelection === 'paper' && sets[currentSet].playerOneSelection === 'rock' ||
+                sets[currentSet].playerTwoSelection === 'rock' && sets[currentSet].playerOneSelection === 'scissors'
             ) {
                 Games.update(game._id, {$inc: {"playerTwo.score": 1}});
             }
         }
-        Games.update(game._id, {$set: {currentSet: updateCurrentSet, scores: scores}});
+
+        Games.update(game._id, {$set: {"current.set": updateCurrentSet, sets: sets}});
         return updateCurrentSet;
     },
 
-    gameUpdateIntervalValue: function(gameId, count) {
-        Games.update(gameId, {$set: {intervalValue: count}});
+    gameUpdateCurrentInterval: function(gameId, count) {
+        Games.update(gameId, {$set: {"current.interval": count}});
+    },
+
+    // mark game completed
+    gameUpdateIsCompletedAndIsPlaying: function(gameId) {
+        var game = Games.findOne({_id: gameId});
+        if(game && game.is.completed === false && game.is.playing === true) {
+            // validate data
+            check(gameId, String);
+            check(Meteor.userId(), String);
+
+            Games.update(gameId, {$set: {"is.completed": true, "is.playing": false}});
+        }
     }
 });

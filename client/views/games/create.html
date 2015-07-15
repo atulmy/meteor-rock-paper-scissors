@@ -1,0 +1,46 @@
+<template name="gamesCreate">
+
+    <h3>Create Game</h3>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{#if currentUser._id }}
+                <form id="game-create">
+                    <div class="form-group">
+                        <label for="form-create-title">Title</label>
+                        <input type="text" class="form-control" id="form-create-title" placeholder="give it a name!"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="form-create-bestof">Best of</label>
+                        <div class="btn-group clearfix" data-toggle="buttons">
+                            <div class="btn btn-default active">
+                                <input type="radio" class="form-create-bestof" name="setof" value="3" autocomplete="off" checked="checked"> 3
+                            </div>
+                            <div class="btn btn-default">
+                                <input type="radio" class="form-create-bestof" name="setof" value="5" autocomplete="off"> 5
+                            </div>
+                            <div class="btn btn-default">
+                                <input type="radio" class="form-create-bestof" name="setof" value="7" autocomplete="off"> 7
+                            </div>
+                            <div class="btn btn-default">
+                                <input type="radio" class="form-create-bestof" name="setof" value="0" autocomplete="off"> Indefinite
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="form-create-public" checked="checked"> Public Game (anyone can join)
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-default" id="game-create-submit" title="Create new game">Create</button>
+                </form>
+            {{ else }}
+                <p class="mb0">Please login or signup to create a game.</p>
+            {{/ if }}
+        </div>
+    </div>
+
+</template>
