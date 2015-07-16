@@ -31,6 +31,42 @@ Template.gamesPlay.helpers({
         }
         return '';
     },
+    playerOneScore: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            var playerOneScore = Session.get('playerOneScore');
+            if (playerOneScore != game.playerOne.score) {
+                Session.set('playerOneScore', game.playerOne.score);
+                if(typeof playerOneScore !== 'undefined') {
+                    $('#audio-score')[0].play();
+                    $('.player-one-score').addClass('vibrate');
+                    setTimeout(function () {
+                        $('.player-one-score').removeClass('vibrate');
+                    }, 1000);
+                }
+            }
+            return game.playerOne.score;
+        }
+        return 0;
+    },
+    playerTwoScore: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            var playerTwoScore = Session.get('playerTwoScore');
+            if (playerTwoScore != game.playerTwo.score) {
+                Session.set('playerTwoScore', game.playerTwo.score);
+                if(typeof playerTwoScore !== 'undefined') {
+                    $('#audio-score')[0].play();
+                    $('.player-two-score').addClass('vibrate');
+                    setTimeout(function () {
+                        $('.player-two-score').removeClass('vibrate');
+                    }, 1000);
+                }
+            }
+            return game.playerTwo.score;
+        }
+        return 0;
+    },
     playerOnePointText: function() {
         var game = Games.findOne({_id: Session.get('gameId')});
         if(game) {
@@ -100,7 +136,7 @@ Template.gamesPlay.helpers({
     currentlySelected: function() {
         var currentlySelected = '';
         var game = Games.findOne({_id: Session.get('gameId')});
-        if(game && typeof game.sets[game.current.set] !== 'undefined') {
+        if(game && typeof game.sets !== 'undefined' && typeof game.sets[game.current.set] !== 'undefined') {
             if(game.playerOne.id === Meteor.userId() && typeof game.sets[game.current.set].playerOneSelection !== 'undefined') {
                 return game.sets[game.current.set].playerOneSelection;
             } else if(game.playerTwo.id === Meteor.userId() && typeof game.sets[game.current.set].playerTwoSelection !== 'undefined') {
@@ -127,11 +163,16 @@ Template.gamesPlay.events({
                 if(!error) {
                     template.$('.button-ready').hide();
 
-                    var game = Games.findOne({_id: Session.get('gameId')});
+                    game = Games.findOne({_id: Session.get('gameId')});
+
                     if(game.playerOne.ready && game.playerTwo.ready) {
+
+                        // update which player is winning
                         Meteor.call('gameUpdateIsPlaying', game._id, function (error, response) {
                             console.log('gameUpdateIsPlaying');
                             if (!error) {
+
+                                // show Rock Paper Scissors overlay
                                 Meteor.call('gameShowRPS', game._id, interval, intervalWait, function (error, response) {
                                     console.log('gameShowRPS');
                                     interval = response;
@@ -148,14 +189,28 @@ Template.gamesPlay.events({
     'click .button-game': function(event, template) {
         var game = Games.findOne({_id: Session.get('gameId')});
         if(game) {
+            if(
+                (typeof game.sets !== 'undefined' && typeof game.sets[game.current.set] !== 'undefined')
+                &&
+                (
+                    (game.playerOne.id === Meteor.userId() && typeof game.sets[game.current.set].playerOneSelection !== 'undefined')
+                    ||
+                    (game.playerTwo.id === Meteor.userId() && typeof game.sets[game.current.set].playerTwoSelection !== 'undefined')
+                )
+            ) {
+                return false;
+            }
             var currentSet = game.current.set;
             var selection = template.$(event.currentTarget).attr('selection');
-            console.log(selection);
+
+            template.$(event.currentTarget).addClass('opacity-2');
+
             Meteor.call('gameAddSet', game, selection, function (error, response) {
                 console.log('response '+response);
-                template.$(event.currentTarget).addClass('opacity-2');
                 if (!error) {
                     if(game.bestOf !== 0 && response === game.bestOf) {
+
+                        // finish game
                         Meteor.call('gameUpdateIsCompletedAndIsPlaying', game._id, function (error, response) {
                             console.log('gameUpdateIsCompletedAndIsPlaying');
                             if (error) {
@@ -168,17 +223,20 @@ Template.gamesPlay.events({
                         if (response != currentSet) {
                             setTimeout(function() {
                                 $('.button-game').removeClass('opacity-2');
-                            }, 1000);
-
-                            Meteor.call('gameShowRPS', game._id, interval, intervalWait, function (error, response) {
-                                console.log('gameShowRPS');
-                                interval = response;
 
                                 game = Games.findOne({_id: Session.get('gameId')});
+
+                                // update which player is winning
                                 Meteor.call('gameUpdatePlayerWinner', game, function(error, response) {
                                     console.log('gameUpdatePlayerWinner');
+
+                                    // show Rock Paper Scissors overlay
+                                    Meteor.call('gameShowRPS', game._id, interval, intervalWait, function (error, response) {
+                                        console.log('gameShowRPS');
+                                        interval = response;
+                                    });
                                 });
-                            });
+                            }, 1000);
                         }
                     }
                 }

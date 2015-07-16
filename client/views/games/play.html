@@ -37,12 +37,12 @@
                 </div>
             </div>
             <div class="clearfix">
-                <div class="col col-xs-5 text-right">
-                    {{ game.playerOne.score }} {{ playerOnePointText }}
+                <div class="col col-xs-5 text-right player-one-score">
+                    {{ playerOneScore }} {{ playerOnePointText }}
                 </div>
                 <div class="col col-xs-2 text-center"></div>
-                <div class="col col-xs-5 text-left">
-                    {{ game.playerTwo.score }} {{ playerTwoPointText }}
+                <div class="col col-xs-5 text-left player-two-score">
+                    {{ playerTwoScore }} {{ playerTwoPointText }}
                 </div>
             </div>
 
@@ -127,5 +127,9 @@
         {{/ if }}
 
     </div>
+
+    <audio src="/audio/you-wouldnt-believe.mp3" id="audio-score" class="display-none">
+        <p>Your browser does not support the <code>audio</code> element </p>
+    </audio>
 
 </template>
