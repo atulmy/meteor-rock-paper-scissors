@@ -4,10 +4,10 @@ Template.gamesList.helpers({
     },
 
     games: function() {
-        return Games.find({"is.public": true, "is.completed": false, "is.playing": false}, {sort: {createdAt: -1}, limit : 5});
+        return Games.find({"is.public": true, "is.completed": false, "is.playing": false}, {sort: {createdAt: -1}});
     },
     gamesCount: function() {
-        return Games.find({"is.public": true, "is.completed": false, "is.playing": false}, {sort: {createdAt: -1}, limit : 5}).count();
+        return Games.find({"is.public": true, "is.completed": false, "is.playing": false}, {sort: {createdAt: -1}}).count();
     },
 
     gamesFinished: function() {
@@ -34,6 +34,7 @@ Template.gamesList.events({
         var gameBestOf = parseInt(template.$('.form-create-bestof:checked').val());
 
         Meteor.call('gameInsert', gameTitle, gameBestOf, gameIsPublic, function(error, response) {
+            console.log('gameInsert');
             if(!error) {
                 Router.go('play', {gameId: response});
             } else {

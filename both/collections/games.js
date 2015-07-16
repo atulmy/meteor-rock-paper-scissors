@@ -28,8 +28,8 @@ Meteor.methods({
         // create game document (object)
         var game = {
             title: gameTitle,
-            playerOne: {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0},
-            playerTwo: {id: "0", name: "Waiting for player...", score: 0},
+            playerOne: {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0, ready: false, winner: false},
+            playerTwo: {id: "0", name: "Waiting for player...", score: 0, ready: false, winner: false},
             bestOf: gameBestOf,
             current: {set: 0, interval: 0},
             is: {playing: false, completed: false, public: gameIsPublic}
@@ -41,16 +41,42 @@ Meteor.methods({
         return gameId;
     },
 
+    // player joined game
+    gameUpdatePlayerTwo: function(gameId) {
+        // validate data
+        check(gameId, String);
+        check(Meteor.userId(), String);
+
+        var playerTwo = {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0, ready: false, winner: false};
+        Games.update(gameId, {$set: {playerTwo: playerTwo}});
+
+        return playerTwo;
+    },
+
+    // player says is ready to play
+    gameUpdatePlayerReady: function(gameId, isPlayerOne) {
+        // validate data
+        check(gameId, String);
+        check(Meteor.userId(), String);
+
+        if(isPlayerOne) {
+            Games.update(gameId, {$set: {"playerOne.ready": true}});
+        } else {
+            Games.update(gameId, {$set: {"playerTwo.ready": true}});
+        }
+
+        return true;
+    },
+
     // start game
     gameUpdateIsPlaying: function(gameId) {
         // validate data
         check(gameId, String);
         check(Meteor.userId(), String);
 
-        Games.update(gameId, {$set: {
-            playerTwo: {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0},
-            "is.playing": true
-        }});
+        Games.update(gameId, {$set: {"is.playing": true}});
+
+        return true;
     },
 
     // called after choosing object (rock / paper / scissor) for both the user
@@ -113,5 +139,16 @@ Meteor.methods({
 
             Games.update(gameId, {$set: {"is.completed": true, "is.playing": false}});
         }
+    },
+
+    gameUpdatePlayerWinner: function(game) {
+        if(game.playerOne.score == game.playerTwo.score) {
+            // nothing
+        } else if(game.playerOne.score > game.playerTwo.score) {
+            Games.update(game._id, {$set: {"playerOne.winner": true}});
+        } else if(game.playerTwo.score > game.playerOne.score) {
+            Games.update(game._id, {$set: {"playerTwo.winner": true}});
+        }
+        return true;
     }
 });

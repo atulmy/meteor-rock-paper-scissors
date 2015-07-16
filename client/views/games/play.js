@@ -9,6 +9,15 @@ Template.gamesPlay.helpers({
     game: function() {
         return Games.findOne({_id: Session.get('gameId')});
     },
+    gameIndefinite: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            if(game.bestOf === 0) {
+                return true;
+            }
+        }
+        return false;
+    },
     winnerName: function() {
         var game = Games.findOne({_id: Session.get('gameId')});
         if(game) {
@@ -66,11 +75,76 @@ Template.gamesPlay.helpers({
             return (game.current.interval > 0);
         }
         return false;
+    },
+    playerOneReadyText: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game && game.playerOne.ready === true) {
+            return 'ready <span class="glyphicon glyphicon-ok"></span>';
+        }
+        return 'not ready <span class="glyphicon glyphicon-time"></span>';
+    },
+    playerTwoReadyText: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game && game.playerTwo.ready === true) {
+            return 'ready <span class="glyphicon glyphicon-ok"></span>';
+        }
+        return 'not ready <span class="glyphicon glyphicon-time"></span>';
+    },
+    gameCurrentSet: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            return game.current.set + 1;
+        }
+        return 1;
+    },
+    currentlySelected: function() {
+        var currentlySelected = '';
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game && typeof game.sets[game.current.set] !== 'undefined') {
+            if(game.playerOne.id === Meteor.userId() && typeof game.sets[game.current.set].playerOneSelection !== 'undefined') {
+                return game.sets[game.current.set].playerOneSelection;
+            } else if(game.playerTwo.id === Meteor.userId() && typeof game.sets[game.current.set].playerTwoSelection !== 'undefined') {
+                return game.sets[game.current.set].playerTwoSelection;
+            }
+        }
+        return currentlySelected;
     }
 });
 
 // Events
 Template.gamesPlay.events({
+
+    // Set ready and start game
+    'click .button-ready': function (event, template) {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            var isPlayerOne = false;
+            if(Meteor.userId() === game.playerOne.id) {
+                isPlayerOne = true;
+            }
+            Meteor.call('gameUpdatePlayerReady', game._id, isPlayerOne, function (error, response) {
+                console.log('gameUpdatePlayerReady');
+                if(!error) {
+                    template.$('.button-ready').hide();
+
+                    var game = Games.findOne({_id: Session.get('gameId')});
+                    if(game.playerOne.ready && game.playerTwo.ready) {
+                        Meteor.call('gameUpdateIsPlaying', game._id, function (error, response) {
+                            console.log('gameUpdateIsPlaying');
+                            if (!error) {
+                                Meteor.call('gameShowRPS', game._id, interval, intervalWait, function (error, response) {
+                                    console.log('gameShowRPS');
+                                    interval = response;
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    },
+
+    // select object
     'click .button-game': function(event, template) {
         var game = Games.findOne({_id: Session.get('gameId')});
         if(game) {
@@ -79,34 +153,55 @@ Template.gamesPlay.events({
             console.log(selection);
             Meteor.call('gameAddSet', game, selection, function (error, response) {
                 console.log('response '+response);
+                template.$(event.currentTarget).addClass('opacity-2');
                 if (!error) {
-                    if(response != currentSet) {
-                        var count = 3;
-                        interval = setInterval(function () {
-                            if (count >= 0) {
-                                //$('#game-overlay').show().fadeOut();
-                                Meteor.call('gameUpdateCurrentInterval', game._id, count, function (error, response) {
-
-                                });
-                                count--;
+                    if(game.bestOf !== 0 && response === game.bestOf) {
+                        Meteor.call('gameUpdateIsCompletedAndIsPlaying', game._id, function (error, response) {
+                            console.log('gameUpdateIsCompletedAndIsPlaying');
+                            if (error) {
+                                //alert(error.reason);
+                            } else {
+                                clearInterval(interval);
                             }
-                        }, intervalWait, count);
+                        });
+                    } else {
+                        if (response != currentSet) {
+                            setTimeout(function() {
+                                $('.button-game').removeClass('opacity-2');
+                            }, 1000);
+
+                            Meteor.call('gameShowRPS', game._id, interval, intervalWait, function (error, response) {
+                                console.log('gameShowRPS');
+                                interval = response;
+
+                                game = Games.findOne({_id: Session.get('gameId')});
+                                Meteor.call('gameUpdatePlayerWinner', game, function(error, response) {
+                                    console.log('gameUpdatePlayerWinner');
+                                });
+                            });
+                        }
                     }
                 }
             });
         }
     },
+
+    // finish game
     'click .button-finish': function() {
-        var game = Games.findOne({_id: Session.get('gameId')});
-        if(game) {
-            // mark game completed
-            Meteor.call('gameUpdateIsCompletedAndIsPlaying', game._id, function (error, response) {
-                if (error) {
-                    alert(error.reason);
-                } else {
-                    clearInterval(interval);
-                }
-            });
+        var confirmFinish = confirm('Are you sure you want to finish this game? Losing huh?');
+        if(confirmFinish) {
+            var game = Games.findOne({_id: Session.get('gameId')});
+            if (game) {
+                // mark game completed
+                Meteor.call('gameUpdateIsCompletedAndIsPlaying', game._id, function (error, response) {
+                    console.log('gameUpdateIsCompletedAndIsPlaying');
+                    if (error) {
+                        //alert(error.reason);
+                    } else {
+                        clearInterval(interval);
+                    }
+                });
+            }
         }
     }
 });
@@ -118,19 +213,11 @@ Template.gamesPlay.rendered = function () {
     if(game) {
         if(game.playerOne.id !== userId && game.is.completed === false && game.is.playing !== true) {
 
-            // Start game
-            Meteor.call('gameUpdateIsPlaying', game._id, function(error, response) {
+            // Player joined
+            Meteor.call('gameUpdatePlayerTwo', game._id, function(error, response) {
+                console.log('gameUpdatePlayerTwo');
                 if(!error) {
-                    var count = 3;
-                    interval = setInterval(function() {
-                        if(count >= 0) {
-                            //$('#game-overlay').show().fadeOut();
-                            Meteor.call('gameUpdateIntervalValue', game._id, count, function(error, response) {
-
-                            });
-                            count--;
-                        }
-                    }, intervalWait, count);
+                    //Meteor.call('browserNotificationShow', response.name+" has joined your game. Lets begin! Go go go...");
                 }
             });
         }

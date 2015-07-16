@@ -7,6 +7,12 @@ var playerInfo = new SimpleSchema({
     },
     score: {
         type: Number
+    },
+    ready: {
+        type: Boolean
+    },
+    winner: {
+        type: Boolean
     }
 });
 
@@ -66,11 +72,6 @@ Games.attachSchema(new SimpleSchema({
     },
 
     playerTwo: {
-        type: playerInfo,
-        optional: true
-    },
-
-    winner: {
         type: playerInfo,
         optional: true
     },

@@ -2,22 +2,22 @@
 
     <div class="col col-md-4">
         <div class="col col-md-12">
-            <h3>Online Games</h3>
+            <h3><span class="glyphicon glyphicon-star icon-green icon-small"></span> Online Games</h3>
 
             <div class="list-group">
                 {{#if gamesCount }}
                     {{# each games }}
-                        <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
+                        <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item transition transition-grow" title="Click to play - {{ title }}">
                             <h4 class="list-group-item-heading">{{ title }}</h4>
 
                             <p class="list-group-item-text">Created by <span class="text-underline">{{ playerOne.name }}</span> &bull; Best of {{ bestOf }}</p>
                         </a>
                     {{/ each }}
                 {{ else }}
-                    <div class="list-group-item">
+                    <div class="list-group-item gray">
                         <h4 class="list-group-item-heading">No open games to play. </h4>
 
-                        <p class="list-group-item-text">Why don't you create one?</p>
+                        <p class="list-group-item-text">Why don't you create one and play like a boss <span class="glyphicon glyphicon-sunglasses"></span>?</p>
                     </div>
                 {{/if }}
             </div>
@@ -32,33 +32,43 @@
         {{/if }}
     </div>
 
-    {{#if gamesFinishedCount }}
-        <div class="col col-md-4">
-            <h3>Finished Games</h3>
+    <div class="col col-md-4">
+        <h3><span class="glyphicon glyphicon-star icon-gray icon-small"></span> Finished Games</h3>
 
+        {{#if gamesFinishedCount }}
             <div class="list-group">
                 {{# each gamesFinished }}
-                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
+                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item transition transition-grow" title="Click to view results">
                         <h4 class="list-group-item-heading">{{ title }}</h4>
 
                         <p class="list-group-item-text">
-                            <span class="text-underline">{{ playerOne.name }}</span> vs. <span class="text-underline">{{ playerTwo.name }}</span> &bull;
-                            Best of {{ bestOf }} &bull;
-                            Score: {{ playerOne.score }} / {{ playerTwo.score }}
+                            <span class="text-underline {{# if equalTo playerOne.id winner.id }} icon-green {{/ if }}">{{ playerOne.name }}</span>
+                            vs.
+                            <span class="text-underline {{# if equalTo playerTwo.id winner.id }} icon-green {{/ if }}">{{ playerTwo.name }}</span>
+                            &bull;
+                            Score: {{ playerOne.score }} / {{ playerTwo.score }} &bull;
+                            {{# if greaterThan bestOf 0 }} Best of {{ bestOf }} {{/ if }}
+                            {{# if lessThanOrEqualTo bestOf 0 }} Best of {{ current.set }} {{/ if }}
                         </p>
                     </a>
                 {{/ each }}
             </div>
-        </div>
-    {{/if }}
+        {{ else }}
+            <div class="list-group-item gray">
+                <h4 class="list-group-item-heading">No finished game to show.</h4>
 
-    {{#if gamesPlayingCount }}
-        <div class="col col-md-4">
-            <h3>Ongoing Games</h3>
+                <p class="list-group-item-text">Why don't you create one and finish it like a boss <span class="glyphicon glyphicon-sunglasses"></span>?</p>
+            </div>
+        {{/if }}
+    </div>
 
+    <div class="col col-md-4">
+        <h3><span class="glyphicon glyphicon-star icon-red icon-small"></span> Spectate Ongoing Games</h3>
+
+        {{#if gamesPlayingCount }}
             <div class="list-group">
                 {{# each gamesPlaying }}
-                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
+                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item transition transition-grow" title="Click to spectate this game">
                         <h4 class="list-group-item-heading">{{ title }}</h4>
 
                         <p class="list-group-item-text">
@@ -69,8 +79,14 @@
                     </a>
                 {{/ each }}
             </div>
-        </div>
-    {{/if }}
+        {{ else }}
+            <div class="list-group-item gray">
+                <h4 class="list-group-item-heading">No ongoing game to spectate.</h4>
+
+                <p class="list-group-item-text">Watch and learn from the real gamers</p>
+            </div>
+        {{/if }}
+    </div>
 
     {{#if greaterThanOrEqualTo gamesCount 5 }}
         <a href="javascript:void(0);" class="create-game glyphicon glyphicon-plus transition transition-grow" title="Create a game"></a>

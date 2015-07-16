@@ -5,7 +5,23 @@
         <div class="col col-sm-12 text-center">
             <h3 class="text-center">{{ game.title }}</h3>
 
-            <p class="mb0">Best of {{ game.bestOf }}</p>
+            <p class="mb0">
+                {{#if game.is.playing }}
+                    {{#if gameIndefinite  }}
+                        Current Set: {{ gameCurrentSet }}
+                    {{ else }}
+                        Set: {{ gameCurrentSet }} out of {{ game.bestOf }}
+                    {{/ if }}
+                {{/ if }}
+
+                {{#if game.is.completed }}
+                    {{# if gameIndefinite }}
+                        Sets Played: {{ gameCurrentSet }}
+                    {{ else }}
+                        Best of {{ game.bestOf }}
+                    {{/ if }}
+                {{/ if }}
+            </p>
 
             <hr/>
 
@@ -37,7 +53,7 @@
 
             <div class="col col-sm-12 text-center">
                 {{#if game.is.completed }}
-                    <p><span class="glyphicon glyphicon-star"></span> {{{ winnerName }}} <span class="glyphicon glyphicon-star"></span></p>
+                    <p><span class="glyphicon glyphicon-star icon-red"></span> {{{ winnerName }}} <span class="glyphicon glyphicon-star icon-red"></span></p>
                 {{/ if }}
                 <p>Game finished.</p>
             </div>
@@ -46,37 +62,52 @@
 
             {{#if notEqualTo game.playerTwo.id "0" }}
 
-                <div class="col col-sm-12">
-                    <div class="col col-sm-4 text-center">
-                        <a href="javascript:void(0);" class="button-game" selection="rock" title="Rock">
-                            <img src="/images/button-rock.png" />
-                        </a>
+                {{#if game.is.playing }}
 
-                        <p>ROCK</p>
+                    <div class="col col-sm-12">
+                        <div class="col col-sm-4 text-center">
+                            <a href="javascript:void(0);" class="button-game button-rock transition transition-grow {{# if equalTo currentlySelected "rock" }} opacity-2 {{/ if }}" selection="rock" title="Rock">
+                                <img src="/images/button-rock.png" />
+                            </a>
+
+                            <p>ROCK</p>
+                        </div>
+
+                        <div class="col col-sm-4 text-center">
+                            <a href="javascript:void(0);" class="button-game button-paper transition transition-grow {{# if equalTo currentlySelected "paper" }} opacity-2 {{/ if }}" selection="paper" title="Paper">
+                                <img src="/images/button-paper.png" />
+                            </a>
+
+                            <p>PAPER</p>
+                        </div>
+
+                        <div class="col col-sm-4 text-center">
+                            <a href="javascript:void(0);" class="button-game button-scissors transition transition-grow {{# if equalTo currentlySelected "scissors" }} opacity-2 {{/ if }}" selection="scissors" title="Scissors">
+                                <img src="/images/button-scissors.png" />
+                            </a>
+
+                            <p>SCISSORS</p>
+                        </div>
                     </div>
 
-                    <div class="col col-sm-4 text-center">
-                        <a href="javascript:void(0);" class="button-game" selection="paper" title="Paper">
-                            <img src="/images/button-paper.png" />
-                        </a>
+                    <div class="col col-sm-12 text-center">
+                        <hr/>
 
-                        <p>PAPER</p>
+                        <button type="button" class="btn btn-default button-finish">Finish</button>
                     </div>
-
-                    <div class="col col-sm-4 text-center">
-                        <a href="javascript:void(0);" class="button-game" selection="scissors" title="Scissors">
-                            <img src="/images/button-scissors.png" />
-                        </a>
-
-                        <p>SCISSORS</p>
+                {{ else }}
+                    <div class="col col-sm-12 text-center">
+                        <div class="col col-sm-8 col-md-offset-2">
+                            <a title="Yes, I'm ready!" href="javascript:void(0);" class="shadow text-center button-ready cursor-pointer"><img src="/images/shall-we-begin.gif" class="img-responsive" alt="shall-we-begin?"/></a>
+                        </div>
+                        <p class="text-center clearfix">
+                            <button type="button" class="btn btn-success button-ready mt20" title="Yes, I'm ready!">Yes, I'm ready!</button>
+                        </p>
+                        <p class="text-center">{{ game.playerOne.name }} is {{{ playerOneReadyText }}}</p>
+                        <p class="text-center">{{ game.playerTwo.name }} is {{{ playerTwoReadyText }}}</p>
                     </div>
-                </div>
+                {{/ if }}
 
-                <div class="col col-sm-12 text-center">
-                    <hr/>
-
-                    <button type="button" class="btn btn-default button-finish">Finish</button>
-                </div>
             {{ else }}
                 <div class="col col-sm-12 text-center">
                     <p>{{> spinner}}</p>

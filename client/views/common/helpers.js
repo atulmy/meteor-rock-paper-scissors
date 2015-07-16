@@ -23,3 +23,7 @@ Template.registerHelper('lessThan', function (a, b) {
 Template.registerHelper('lessThanOrEqualTo', function (a, b) {
     return a <= b;
 });
+
+Template.registerHelper('and', function (a, b) {
+    return a && b;
+});
