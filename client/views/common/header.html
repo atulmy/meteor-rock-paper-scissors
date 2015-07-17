@@ -1,11 +1,11 @@
 <template name="commonHeader">
 
-    <div class="navbar navbar-default ">
+    <div class="navbar navbar-default">
         <div class="col col-sm-4 text-left">
-            <a href="#" class="menu transition transition-grow" title="Show Menu">
-                <span class="menu-icon glyphicon glyphicon-menu-hamburger"></span>
+            <a href="#" class="menu transition transition-grow link-game-info" title="Show Menu">
+                <span class="menu-icon glyphicon glyphicon-info-sign"></span>
 
-                <span class="menu-text">MENU</span>
+                <span class="menu-text">Info</span>
             </a>
         </div>
 
@@ -16,6 +16,12 @@
         </div>
 
         <div class="col col-sm-4 text-right">{{> loginButtons }}</div>
+    </div>
+
+    <div class="overlay display-none" id="game-info">
+        <p class="text-center"><img src="/images/graphic.png" alt="Who kills who!?" title="Who kills who!?"/></p>
+        <p>Who kills who!?</p>
+        <p><button type="button" class="btn btn-success button-game-info">Okay, Got it!</button></p>
     </div>
 
 </template>

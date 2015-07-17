@@ -95,7 +95,7 @@ strong {
     background-color: #FFD08E;
     border-color: #F2BB6F;
 }
-#game-overlay, #game-overlay-opaque {
+#game-overlay, #game-overlay-opaque, .overlay {
     z-index: 99999;
     background-color: #fff;
     position: fixed;
@@ -106,12 +106,17 @@ strong {
     opacity: 0.9;
     text-align: center;
     color: #333;
-    padding-top: 15%;
     font-size: 4em;
     text-shadow: 0 0 10px #ffd08e;
 }
+#game-overlay {
+    padding-top: 15%;
+}
 #game-overlay-opaque {
     padding-top: 10%;
+}
+#game-info {
+    padding-top: 5%;
 }
 .create-game {
     right: 30px;
