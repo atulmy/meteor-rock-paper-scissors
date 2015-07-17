@@ -1,44 +1,40 @@
 <template name="gamesList">
 
     <div class="col col-md-4">
-        <div class="col col-md-12">
-            <h3><span class="glyphicon glyphicon-star icon-green icon-small"></span> Online Games</h3>
+        {{#if lessThan gamesCount 5 }}{{/if }}
 
-            <div class="list-group">
-                {{#if gamesCount }}
-                    {{# each games }}
-                        <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item transition transition-grow" title="Click to play - {{ title }}">
-                            <h4 class="list-group-item-heading">{{ title }}</h4>
+        {{> gamesCreate }}
+    </div>
 
-                            <p class="list-group-item-text">Created by <span class="text-underline">{{ playerOne.name }}</span> &bull; Best of {{ bestOf }}</p>
-                        </a>
-                    {{/ each }}
-                {{ else }}
-                    <div class="list-group-item gray">
-                        <h4 class="list-group-item-heading">No open games to play. </h4>
+    <div class="col col-md-4">
+        <h3><span class="glyphicon glyphicon-star icon-green icon-small"></span> Online Games</h3>
 
-                        <p class="list-group-item-text">Why don't you create one and play like a boss <span class="glyphicon glyphicon-sunglasses"></span>?</p>
-                    </div>
-                {{/if }}
-            </div>
+        <div class="list-group list-group-games">
+            {{#if gamesCount }}
+                {{# each games }}
+                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
+                        <h4 class="list-group-item-heading">{{ title }}</h4>
+
+                        <p class="list-group-item-text">Created by <span class="text-underline">{{ playerOne.name }}</span> &bull; Best of {{ bestOf }}</p>
+                    </a>
+                {{/ each }}
+            {{ else }}
+                <div class="list-group-item gray">
+                    <h4 class="list-group-item-heading">No open games to play. </h4>
+
+                    <p class="list-group-item-text">Why don't you create one and play like a boss <span class="glyphicon glyphicon-sunglasses"></span>?</p>
+                </div>
+            {{/if }}
         </div>
-
-        {{#if lessThan gamesCount 5 }}
-            <div class="col col-md-12">
-
-                {{> gamesCreate }}
-
-            </div>
-        {{/if }}
     </div>
 
     <div class="col col-md-4">
         <h3><span class="glyphicon glyphicon-star icon-gray icon-small"></span> Finished Games</h3>
 
         {{#if gamesFinishedCount }}
-            <div class="list-group">
+            <div class="list-group list-group-games">
                 {{# each gamesFinished }}
-                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item transition transition-grow" title="Click to view results">
+                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to view results">
                         <h4 class="list-group-item-heading">{{ title }}</h4>
 
                         <p class="list-group-item-text">
@@ -62,34 +58,36 @@
         {{/if }}
     </div>
 
-    <div class="col col-md-4">
-        <h3><span class="glyphicon glyphicon-star icon-red icon-small"></span> Spectate Ongoing Games</h3>
+    {{# if showOngoingGames }}
+        <div class="col col-md-4">
+            <h3><span class="glyphicon glyphicon-star icon-red icon-small"></span> Spectate Ongoing Games</h3>
 
-        {{#if gamesPlayingCount }}
-            <div class="list-group">
-                {{# each gamesPlaying }}
-                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item transition transition-grow" title="Click to spectate this game">
-                        <h4 class="list-group-item-heading">{{ title }}</h4>
+            {{#if gamesPlayingCount }}
+                <div class="list-group list-group-games">
+                    {{# each gamesPlaying }}
+                        <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to spectate this game">
+                            <h4 class="list-group-item-heading">{{ title }}</h4>
 
-                        <p class="list-group-item-text">
-                            <span class="text-underline">{{ playerOne.name }}</span> vs. <span class="text-underline">{{ playerTwo.name }}</span> &bull;
-                            Best of {{ bestOf }} &bull;
-                            Live Score: {{ playerOne.score }} / {{ playerTwo.score }}
-                        </p>
-                    </a>
-                {{/ each }}
-            </div>
-        {{ else }}
-            <div class="list-group-item gray">
-                <h4 class="list-group-item-heading">No ongoing game to spectate.</h4>
+                            <p class="list-group-item-text">
+                                <span class="text-underline">{{ playerOne.name }}</span> vs. <span class="text-underline">{{ playerTwo.name }}</span> &bull;
+                                Best of {{ bestOf }} &bull;
+                                Live Score: {{ playerOne.score }} / {{ playerTwo.score }}
+                            </p>
+                        </a>
+                    {{/ each }}
+                </div>
+            {{ else }}
+                <div class="list-group-item gray">
+                    <h4 class="list-group-item-heading">No ongoing game to spectate.</h4>
 
-                <p class="list-group-item-text">Watch and learn from the real gamers</p>
-            </div>
-        {{/if }}
-    </div>
+                    <p class="list-group-item-text">Watch and learn from the real gamers</p>
+                </div>
+            {{/if }}
+        </div>
+    {{/if }}
 
     {{#if greaterThanOrEqualTo gamesCount 5 }}
-        <a href="javascript:void(0);" class="create-game glyphicon glyphicon-plus transition transition-grow" title="Create a game"></a>
+        <a href="javascript:void(0);" onclick="$('#form-create-title').focus();" class="display-none create-game glyphicon glyphicon-plus transition transition-grow" title="Create a game"></a>
     {{/if }}
 
 </template>

@@ -22,14 +22,14 @@ Router.route('/', {
     name: 'home',
     template: 'staticHome',
     waitOn: function() {
-        return Meteor.subscribe('games');
+        return [Meteor.subscribe('games'), Meteor.subscribe('gamesFinished')];
     }
 });
 Router.route('/play/:gameId', {
     name: 'play',
     template: 'gamesPlay',
     waitOn: function() {
-        return Meteor.subscribe('games');
+        return Meteor.subscribe('game', this.params.gameId);
     },
     onBeforeAction: function() {
         Session.set('gameId', this.params.gameId);

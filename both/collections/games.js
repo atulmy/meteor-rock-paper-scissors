@@ -31,7 +31,7 @@ Meteor.methods({
             playerOne: {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0, ready: false, winner: false},
             playerTwo: {id: "0", name: "Waiting for player...", score: 0, ready: false, winner: false},
             bestOf: gameBestOf,
-            current: {set: 0, interval: 0},
+            current: {set: 0, interval: 0, showAnimation: false},
             is: {playing: false, completed: false, public: gameIsPublic}
         };
 
@@ -150,5 +150,16 @@ Meteor.methods({
             Games.update(game._id, {$set: {"playerTwo.winner": true}});
         }
         return true;
+    },
+
+    gameUpdateCurrentShowAnimation: function(gameId, value) {
+        var game = Games.findOne({_id: gameId});
+        if(game) {
+            // validate data
+            check(gameId, String);
+            check(Meteor.userId(), String);
+
+            Games.update(game._id, {$set: {"current.showAnimation": value}});
+        }
     }
 });

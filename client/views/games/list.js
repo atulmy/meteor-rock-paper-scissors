@@ -11,17 +11,23 @@ Template.gamesList.helpers({
     },
 
     gamesFinished: function() {
-        return Games.find({"is.public": true, "is.completed": true}, {sort: {createdAt: -1}, limit : 5});
+        return Games.find({"is.public": true, "is.completed": true}, {sort: {createdAt: -1}, limit : 10});
     },
     gamesFinishedCount: function() {
-        return Games.find({"is.public": true, "is.completed": true}, {sort: {createdAt: -1}, limit : 5}).count();
+        return Games.find({"is.public": true, "is.completed": true}, {sort: {createdAt: -1}, limit : 10}).count();
     },
 
+    /*
     gamesPlaying: function() {
-        return Games.find({"is.public": true, "is.playing": true}, {sort: {createdAt: -1}, limit : 5});
+        return Games.find({"is.public": true, "is.playing": true}, {sort: {createdAt: -1}, limit : 10});
     },
     gamesPlayingCount: function() {
-        return Games.find({"is.public": true, "is.playing": true}, {sort: {createdAt: -1}, limit : 5}).count();
+        return Games.find({"is.public": true, "is.playing": true}, {sort: {createdAt: -1}, limit : 10}).count();
+    },
+    */
+
+    showOngoingGames: function() {
+        return false;
     }
 });
 

@@ -45,6 +45,10 @@ var current = new SimpleSchema({
 
     interval: {
         type: Number
+    },
+
+    showAnimation: {
+        type: Boolean
     }
 });
 

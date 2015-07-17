@@ -16,7 +16,7 @@
 
                 {{#if game.is.completed }}
                     {{# if gameIndefinite }}
-                        Sets Played: {{ gameCurrentSet }}
+                        Sets Played: {{ game.current.set }}
                     {{ else }}
                         Best of {{ game.bestOf }}
                     {{/ if }}
@@ -55,7 +55,12 @@
                 {{#if game.is.completed }}
                     <p><span class="glyphicon glyphicon-star icon-red"></span> {{{ winnerName }}} <span class="glyphicon glyphicon-star icon-red"></span></p>
                 {{/ if }}
-                <p>Game finished.</p>
+                <p>Game finished. <a href="{{pathFor route='home'}}" title="Play more">Play more<span class="glyphicon glyphicon-chevron-right"></span></a></p>
+
+                {{# if playFinishGameSound }}
+                    <audio src="/audio/game-finished.mp3" class="display-none" autoplay></audio>
+                    {{ playFinishGameSoundStop }}
+                {{/ if }}
             </div>
 
         {{ else }}
@@ -93,7 +98,7 @@
                     <div class="col col-sm-12 text-center">
                         <hr/>
 
-                        <button type="button" class="btn btn-default button-finish">Finish</button>
+                        <button type="button" class="btn btn-default button-finish"><span class="glyphicon glyphicon-flag"></span> Finish</button>
                     </div>
                 {{ else }}
                     <div class="col col-sm-12 text-center">
@@ -126,10 +131,16 @@
             </div>
         {{/ if }}
 
+        {{#if showAnimation }}
+            <div id="game-overlay-opaque">
+                <div id="animated-example" class="animated bounceInLeft">{{ game.playerOne.name }}: <img src="/images/button-{{ playerOneSelectionText }}.png" alt="{{ playerOneSelectionText }}" /></div>
+                <div id="animated-example" class="animated bounceInRight">{{ game.playerTwo.name }}: <img src="/images/button-{{ playerTwoSelectionText }}.png" alt="{{ playerTwoSelectionText }}" /></div>
+            </div>
+        {{/ if }}
     </div>
 
-    <audio src="/audio/you-wouldnt-believe.mp3" id="audio-score" class="display-none">
-        <p>Your browser does not support the <code>audio</code> element </p>
-    </audio>
+    <audio src="/audio/you-wouldnt-believe.mp3" id="audio-score" class="display-none"></audio>
+
+    <audio src="/audio/youve-been-informed.mp3" id="audio-start-set" class="display-none"></audio>
 
 </template>

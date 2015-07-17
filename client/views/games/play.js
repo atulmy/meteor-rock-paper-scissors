@@ -87,6 +87,33 @@ Template.gamesPlay.helpers({
             }
         }
     },
+    playerOneSelectionText: function() {
+        var playerOneSelectionText = '?';
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game && typeof game.sets !== 'undefined' && typeof game.sets[game.current.set - 1] !== 'undefined') {
+            if(typeof game.sets[game.current.set - 1].playerOneSelection !== 'undefined') {
+                return game.sets[game.current.set - 1].playerOneSelection;
+            }
+        }
+        return playerOneSelectionText;
+    },
+    playerTwoSelectionText: function() {
+        var playerOneSelectionText = '?';
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game && typeof game.sets !== 'undefined' && typeof game.sets[game.current.set - 1] !== 'undefined') {
+            if(typeof game.sets[game.current.set - 1].playerTwoSelection !== 'undefined') {
+                return game.sets[game.current.set - 1].playerTwoSelection;
+            }
+        }
+        return playerOneSelectionText;
+    },
+    showAnimation: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            return game.current.showAnimation;
+        }
+        return false;
+    },
     getIntervalText: function() {
         var intervalText = '';
         var game = Games.findOne({_id: Session.get('gameId')});
@@ -129,7 +156,7 @@ Template.gamesPlay.helpers({
     gameCurrentSet: function() {
         var game = Games.findOne({_id: Session.get('gameId')});
         if(game) {
-            return game.current.set + 1;
+            return game.current.set;
         }
         return 1;
     },
@@ -144,6 +171,12 @@ Template.gamesPlay.helpers({
             }
         }
         return currentlySelected;
+    },
+    playFinishGameSound: function() {
+        return Session.get('playFinishGameSound');
+    },
+    playFinishGameSoundStop: function() {
+        return Session.set('playFinishGameSound', false);
     }
 });
 
@@ -158,6 +191,8 @@ Template.gamesPlay.events({
             if(Meteor.userId() === game.playerOne.id) {
                 isPlayerOne = true;
             }
+            Session.set('playFinishGameSound', true);
+
             Meteor.call('gameUpdatePlayerReady', game._id, isPlayerOne, function (error, response) {
                 console.log('gameUpdatePlayerReady');
                 if(!error) {
@@ -171,6 +206,8 @@ Template.gamesPlay.events({
                         Meteor.call('gameUpdateIsPlaying', game._id, function (error, response) {
                             console.log('gameUpdateIsPlaying');
                             if (!error) {
+                                // alert start
+                                $('#audio-start-set')[0].play();
 
                                 // show Rock Paper Scissors overlay
                                 Meteor.call('gameShowRPS', game._id, interval, intervalWait, function (error, response) {
@@ -230,11 +267,27 @@ Template.gamesPlay.events({
                                 Meteor.call('gameUpdatePlayerWinner', game, function(error, response) {
                                     console.log('gameUpdatePlayerWinner');
 
-                                    // show Rock Paper Scissors overlay
-                                    Meteor.call('gameShowRPS', game._id, interval, intervalWait, function (error, response) {
-                                        console.log('gameShowRPS');
-                                        interval = response;
+                                    Meteor.call('gameUpdateCurrentShowAnimation', game._id, true, function () {
+                                        console.log('gameUpdateCurrentShowAnimation');
+                                        setTimeout(function() {
+                                            Meteor.call('gameUpdateCurrentShowAnimation', game._id, false, function () {
+                                                console.log('gameUpdateCurrentShowAnimation');
+                                            });
+                                        }, 3000);
                                     });
+
+                                    setTimeout(function(){
+                                        // alert start
+                                        setTimeout(function() {
+                                            $('#audio-start-set')[0].play();
+                                        }, intervalWait);
+
+                                        // show Rock Paper Scissors overlay
+                                        Meteor.call('gameShowRPS', game._id, interval, intervalWait, function (error, response) {
+                                            console.log('gameShowRPS');
+                                            interval = response;
+                                        });
+                                    }, 2000);
                                 });
                             }, 1000);
                         }
