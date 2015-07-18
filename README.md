@@ -2,9 +2,10 @@
 Rock Paper Scissors - Play Online
 
 Play now: http://rps.atulmy.com
-Or: http://bit.ly/rock-paper-scissors-online
 
-# Made with Meteor
+Alternate URL: http://bit.ly/rock-paper-scissors-online
+
+## Made with Meteor
 
 Meteor is an ultra-simple environment for building modern web
 applications.
