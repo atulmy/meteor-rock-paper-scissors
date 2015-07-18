@@ -117,9 +117,13 @@
                 <div class="col col-sm-12 text-center">
                     <p>{{> spinner}}</p>
 
-                    <p style="padding-top: 110px;">Waiting for another player to join...</p>
+                    {{# if game.ai }}
+                        <p style="padding-top: 110px;">Waiting for computer to join...</p>
+                    {{ else }}
+                        <p style="padding-top: 110px;">Waiting for another player to join...</p>
 
-                    <p>Share this URL: {{ currentUrl }}</p>
+                        <p>Share this URL: {{ currentUrl }}</p>
+                    {{/ if}}
                 </div>
             {{/ if }}
 

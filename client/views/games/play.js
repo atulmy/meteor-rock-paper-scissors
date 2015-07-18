@@ -322,12 +322,12 @@ Template.gamesPlay.rendered = function () {
     var userId = Meteor.userId();
     var game = Games.findOne({_id: Session.get('gameId')});
     if(game) {
-        if(game.playerOne.id !== userId && game.is.completed === false && game.is.playing !== true) {
+        if((game.playerOne.id !== userId || game.ai) && game.is.completed === false && game.is.playing !== true) {
 
             // Player joined
-            Meteor.call('gameUpdatePlayerTwo', game._id, function(error, response) {
+            Meteor.call('gameUpdatePlayerTwo', game._id, game.ai, function (error, response) {
                 console.log('gameUpdatePlayerTwo');
-                if(!error) {
+                if (!error) {
                     //Meteor.call('browserNotificationShow', response.name+" has joined your game. Lets begin! Go go go...");
                 }
             });

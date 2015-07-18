@@ -80,6 +80,10 @@ Games.attachSchema(new SimpleSchema({
         optional: true
     },
 
+    ai: {
+        type: Boolean
+    },
+
     bestOf: {
         type: Number
     },

@@ -30,5 +30,4 @@ Meteor.methods({
         }, intervalWait, count);
         return interval;
     }
-
 });

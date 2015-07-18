@@ -16,20 +16,22 @@ Games.allow({
 Meteor.methods({
 
     // add new game
-    gameInsert: function(gameTitle, gameBestOf, gameIsPublic){
+    gameInsert: function(gameTitle, gameBestOf, gameIsPublic, gameAi){
         // check user signed in
         check(Meteor.userId(), String);
 
         // validate data
         check(gameTitle, String);
         check(gameBestOf, Number)
-        check(gameIsPublic, Boolean);;
+        check(gameIsPublic, Boolean);
+        check(gameAi, Boolean);
 
         // create game document (object)
         var game = {
             title: gameTitle,
             playerOne: {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0, ready: false, winner: false},
             playerTwo: {id: "0", name: "Waiting for player...", score: 0, ready: false, winner: false},
+            ai: gameAi,
             bestOf: gameBestOf,
             current: {set: 0, interval: 0, showAnimation: false},
             is: {playing: false, completed: false, public: gameIsPublic}
@@ -42,12 +44,17 @@ Meteor.methods({
     },
 
     // player joined game
-    gameUpdatePlayerTwo: function(gameId) {
+    gameUpdatePlayerTwo: function(gameId, ai) {
         // validate data
         check(gameId, String);
         check(Meteor.userId(), String);
 
-        var playerTwo = {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0, ready: false, winner: false};
+        if(ai) {
+            var playerTwo = {id: "COMPUTER", name: "Computer", score: 0, ready: true, winner: false};
+        } else {
+            var playerTwo = {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0, ready: false, winner: false};
+        }
+
         Games.update(gameId, {$set: {playerTwo: playerTwo}});
 
         return playerTwo;
@@ -102,6 +109,13 @@ Meteor.methods({
             if(typeof sets[currentSet].playerTwoSelection === 'undefined') {
                 sets[currentSet].playerTwoSelection = playerSelection;
             }
+        }
+
+        if(game.ai) {
+            var xmin = 0;
+            var xmax = 2;
+            var computerSelection = ['rock', 'paper', 'scissors'];
+            sets[currentSet].playerTwoSelection = computerSelection[Math.floor( Math.random() * (xmax + 1 - xmin) + xmin )];
         }
 
         if(typeof sets[currentSet].playerOneSelection !== 'undefined' && typeof sets[currentSet].playerTwoSelection !== 'undefined') {

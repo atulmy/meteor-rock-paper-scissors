@@ -42,12 +42,17 @@ strong {
     display: block;
     clear: both;
 }
+.line-height-12 {
+    line-height: 12px;
+}
 /* --------------- / Bootstrap Overrides --------------- */
 
 /* --------------- Margins and Paddings --------------- */
 .mt20 { margin-top: 20px; }
 .mb0 { margin-bottom: 0px; }
 .pb0 { padding-bottom: 0px; }
+.ma0 { margin: 0px; }
+.pa0 { padding: 0px; }
 /* --------------- / Margins and Paddings --------------- */
 
 /* --------------- Header --------------- */
@@ -116,7 +121,11 @@ strong {
     padding-top: 10%;
 }
 #game-info {
-    padding-top: 5%;
+    padding-top: 3%;
+}
+#game-info .links a, #game-info .links span {
+    font-size: 12px;
+    color: #333;
 }
 .create-game {
     right: 30px;

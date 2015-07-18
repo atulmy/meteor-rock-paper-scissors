@@ -36,10 +36,11 @@ Template.gamesList.events({
         template.$('#game-create-submit').attr('disabled', 'disabled');
 
         var gameTitle = template.$('#form-create-title').val();
-        var gameIsPublic = template.$('#form-create-public').is(':checked');
+        var gameIsPublic = (template.$('#form-create-public').is(':checked')) ? true : false;
         var gameBestOf = parseInt(template.$('.form-create-bestof:checked').val());
+        var gameAi = (template.$('#form-create-ai:checked').val()) ? true : false;
 
-        Meteor.call('gameInsert', gameTitle, gameBestOf, gameIsPublic, function(error, response) {
+        Meteor.call('gameInsert', gameTitle, gameBestOf, gameIsPublic, gameAi, function(error, response) {
             console.log('gameInsert');
             if(!error) {
                 Router.go('play', {gameId: response});
