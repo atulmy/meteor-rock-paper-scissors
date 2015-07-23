@@ -58,7 +58,9 @@
 
                 <p>
                     Game finished &bull;
-                    <a href="#" title="Play again" class="game-play-again"><span class="glyphicon glyphicon-repeat"></span> Play again</a> &bull;
+                    {{# if allowPlayAgain }}
+                        <a href="#" title="Play again" class="game-play-again"><span class="glyphicon glyphicon-repeat"></span> Play again</a> &bull;
+                    {{/ if }}
                     <a href="{{pathFor route='home'}}" title="Play more"><span class="glyphicon glyphicon-chevron-right"></span> Play more</a>
                 </p>
 

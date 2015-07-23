@@ -63,7 +63,7 @@ Template.gamesPlay.helpers({
                         $('.player-two-score').addClass('vibrate');
                         setTimeout(function () {
                             $('.player-two-score').removeClass('vibrate');
-                        }, 1000);
+                        }, 2000);
                     }, 3000);
                 }
             }
@@ -186,11 +186,23 @@ Template.gamesPlay.helpers({
         var game = Games.findOne({_id: Session.get('gameId')});
         if(game) {
             if(game.current.playAgain && typeof game.current.playAgainGameId != 'undefined' && game.current.playAgainGameId !== '') {
+                Meteor.call('gameUpdateCurrentPlayAgain', game._id, false, function(error, response) {
+                    console.log('gameUpdateCurrentPlayAgain');
+                });
                 setTimeout(function() {
                     Router.go('play', {gameId: game.current.playAgainGameId});
                 }, 2000);
+                return game.current.playAgain;
             }
-            return game.current.playAgain;
+        }
+        return false;
+    },
+    allowPlayAgain: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            if(game.playerOne.id === Meteor.userId() || game.playerTwo.id === Meteor.userId()) {
+                return true;
+            }
         }
         return false;
     }
@@ -289,7 +301,7 @@ Template.gamesPlay.events({
                                         Meteor.call('gameUpdateCurrentShowAnimation', game._id, false, function () {
                                             console.log('gameUpdateCurrentShowAnimation');
                                         });
-                                    }, 3000);
+                                    }, 2000);
                                 });
 
                                 setTimeout(function(){
@@ -341,13 +353,13 @@ Template.gamesPlay.events({
             playerOne.winner = playerTwo.winner = false;
 
             Meteor.call('gameUpdateCurrentPlayAgain', game._id, true, function(error, response) {
-                console.log('gameInsert');
+                console.log('gameUpdateCurrentPlayAgain');
                 if(!error) {
                     Meteor.call('gameInsert', game.title+' - Rematch!', game.bestOf, game.is.public, game.ai, playerOne, playerTwo, function(error, response) {
                         console.log('gameInsert');
                         if(!error) {
                             Meteor.call('gameUpdateCurrentPlayAgainGameId', game._id, response, function(error, response) {
-
+                                console.log('gameUpdateCurrentPlayAgainGameId')
                             });
                         } else {
                             alert(error.reason);
