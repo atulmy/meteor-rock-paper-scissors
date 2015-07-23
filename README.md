@@ -1,5 +1,5 @@
 # RPS
-Rock Paper Scissors - Play Online
+Rock &bull; Paper &bull; Scissors - Play Online
 
 Play now: http://rps.atulmy.com
 
