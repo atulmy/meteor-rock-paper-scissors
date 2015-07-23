@@ -40,12 +40,12 @@ Template.gamesList.events({
         var gameBestOf = parseInt(template.$('.form-create-bestof:checked').val());
         var gameAi = (template.$('#form-create-ai:checked').val()) ? true : false;
 
-        Meteor.call('gameInsert', gameTitle, gameBestOf, gameIsPublic, gameAi, function(error, response) {
+        Meteor.call('gameInsert', gameTitle, gameBestOf, gameIsPublic, gameAi, '', '', function(error, response) {
             console.log('gameInsert');
             if(!error) {
                 Router.go('play', {gameId: response});
             } else {
-                alert(error.reason);
+                //alert(error.reason);
             }
             template.$('#game-create-submit').removeAttr('disabled');
         });

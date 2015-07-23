@@ -49,6 +49,15 @@ var current = new SimpleSchema({
 
     showAnimation: {
         type: Boolean
+    },
+
+    playAgain: {
+        type: Boolean
+    },
+
+    playAgainGameId: {
+        type: String,
+        optional: true
     }
 });
 

@@ -16,7 +16,7 @@ Games.allow({
 Meteor.methods({
 
     // add new game
-    gameInsert: function(gameTitle, gameBestOf, gameIsPublic, gameAi){
+    gameInsert: function(gameTitle, gameBestOf, gameIsPublic, gameAi, playerOne, playerTwo){
         // check user signed in
         check(Meteor.userId(), String);
 
@@ -26,14 +26,21 @@ Meteor.methods({
         check(gameIsPublic, Boolean);
         check(gameAi, Boolean);
 
+        if(typeof playerOne === 'undefined' || playerOne === '') {
+            playerOne = {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0, ready: false, winner: false};
+        }
+        if(typeof playerTwo === 'undefined' || playerTwo === '') {
+            playerTwo = {id: "0", name: "Waiting for player...", score: 0, ready: false, winner: false};
+        }
+
         // create game document (object)
         var game = {
             title: gameTitle,
-            playerOne: {id: Meteor.userId(), name: Meteor.user().profile.name, score: 0, ready: false, winner: false},
-            playerTwo: {id: "0", name: "Waiting for player...", score: 0, ready: false, winner: false},
+            playerOne: playerOne,
+            playerTwo: playerTwo,
             ai: gameAi,
             bestOf: gameBestOf,
-            current: {set: 0, interval: 0, showAnimation: false},
+            current: {set: 0, interval: 0, showAnimation: false, playAgain: false},
             is: {playing: false, completed: false, public: gameIsPublic}
         };
 
@@ -174,6 +181,30 @@ Meteor.methods({
             check(Meteor.userId(), String);
 
             Games.update(game._id, {$set: {"current.showAnimation": value}});
+        }
+    },
+
+    gameUpdateCurrentPlayAgain: function(gameId, value) {
+        var game = Games.findOne({_id: gameId});
+        if(game) {
+            // validate data
+            check(gameId, String);
+            check(Meteor.userId(), String);
+            check(value, Boolean);
+
+            Games.update(game._id, {$set: {"current.playAgain": value}});
+        }
+    },
+
+    gameUpdateCurrentPlayAgainGameId: function(gameId, playAgainGameId) {
+        var game = Games.findOne({_id: gameId});
+        if(game) {
+            // validate data
+            check(gameId, String);
+            check(Meteor.userId(), String);
+            check(playAgainGameId, String);
+
+            Games.update(game._id, {$set: {"current.playAgainGameId": playAgainGameId}});
         }
     }
 });

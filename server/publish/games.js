@@ -1,6 +1,8 @@
 // Online Games
 Meteor.publish('games', function() {
-    return Games.find({"is.public": true, "is.completed": false, "is.playing": false}, {sort: {createdAt: -1}});
+    var now = new Date().getTime();
+    var msInDay = 1000 * 60 * 60 * 1;
+    return Games.find({"is.public": true, "is.completed": false, "is.playing": false, createdAt:{$gte: new Date(now - msInDay)}}, {sort: {createdAt: -1}});
 });
 
 // Finished Games

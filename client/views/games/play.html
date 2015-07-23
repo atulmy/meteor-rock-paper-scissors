@@ -55,7 +55,17 @@
                 {{#if game.is.completed }}
                     <p><span class="glyphicon glyphicon-star icon-red"></span> {{{ winnerName }}} <span class="glyphicon glyphicon-star icon-red"></span></p>
                 {{/ if }}
-                <p>Game finished. <a href="{{pathFor route='home'}}" title="Play more">Play more<span class="glyphicon glyphicon-chevron-right"></span></a></p>
+
+                <p>
+                    Game finished &bull;
+                    <a href="#" title="Play again" class="game-play-again"><span class="glyphicon glyphicon-repeat"></span> Play again</a> &bull;
+                    <a href="{{pathFor route='home'}}" title="Play more"><span class="glyphicon glyphicon-chevron-right"></span> Play more</a>
+                </p>
+
+                {{# if gamePlayAgain }}
+                    <p style="margin-top: 70px;">{{> spinner}}</p>
+                    <p>Restarting the game...</p>
+                {{/ if }}
 
                 {{# if playFinishGameSound }}
                     <audio src="/audio/game-finished.mp3" class="display-none" autoplay></audio>
@@ -146,5 +156,7 @@
     <audio src="/audio/you-wouldnt-believe.mp3" id="audio-score" class="display-none"></audio>
 
     <audio src="/audio/youve-been-informed.mp3" id="audio-start-set" class="display-none"></audio>
+
+    <audio src="/audio/game-selections.mp3" id="audio-selections" class="display-none"></audio>
 
 </template>
