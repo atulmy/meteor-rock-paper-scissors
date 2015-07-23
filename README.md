@@ -9,7 +9,7 @@ Alternate URL: http://bit.ly/rock-paper-scissors-online
 
 Atul Yadav - [GitHub](https://github.com/atulmy) &bull; [Twitter](https://twitter.com/atulmy)
 
-Linto Cheeran - [GitHub](https://github.com/HedCET)
+Linto Cheeran - [GitHub](https://github.com/HedCET) &bull; [Twitter](https://twitter.com/linto_cheeran)
 
 ## Made with Meteor
 
