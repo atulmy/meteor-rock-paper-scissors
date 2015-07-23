@@ -5,6 +5,12 @@ Play now: http://rps.atulmy.com
 
 Alternate URL: http://bit.ly/rock-paper-scissors-online
 
+## Authors
+
+Atul Yadav - [GitHub](https://github.com/atulmy) &bull; [Twitter](https://twitter.com/atulmy)
+
+Linto Cheeran - [GitHub](https://github.com/HedCET)
+
 ## Made with Meteor
 
 Meteor is an ultra-simple environment for building modern web
