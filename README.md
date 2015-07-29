@@ -5,6 +5,8 @@ Play now: http://rps.atulmy.com
 
 Alternate URL: http://bit.ly/rock-paper-scissors-online
 
+Updated version coming soon!
+
 ## Authors
 
 Atul Yadav - [GitHub](https://github.com/atulmy) &bull; [Twitter](https://twitter.com/atulmy)
