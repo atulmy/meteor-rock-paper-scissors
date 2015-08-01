@@ -5,7 +5,12 @@ Play now: http://rps.atulmy.com
 
 Alternate URL: http://bit.ly/rock-paper-scissors-online
 
-Updated version coming soon!
+## Updates
+
+[2015-08-01]
+* Chat option added
+* Each set info is now shown in game page
+* Fixed AI issue
 
 ## Authors
 
