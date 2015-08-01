@@ -75,6 +75,30 @@ var is = new SimpleSchema({
     }
 });
 
+var conversation = new SimpleSchema({
+    id: {
+        type: String
+    },
+
+    name: {
+        type: String
+    },
+
+    text: {
+        type: String
+    }
+});
+
+var chat = new SimpleSchema({
+    show: {
+        type: Boolean
+    },
+
+    conversation: {
+        type: [conversation]
+    }
+});
+
 Games.attachSchema(new SimpleSchema({
     title: {
         type: String
@@ -104,6 +128,11 @@ Games.attachSchema(new SimpleSchema({
 
     current: {
         type: current,
+        optional: true
+    },
+
+    chat: {
+        type: chat,
         optional: true
     },
 

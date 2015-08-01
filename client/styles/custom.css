@@ -30,7 +30,6 @@ label {
 }
 hr {
     border-color: #e6e6e6;
-    box-shadow: 0px 1px 0px #fff;
 }
 strong {
     font-weight: 500;
@@ -50,9 +49,11 @@ strong {
 /* --------------- Margins and Paddings --------------- */
 .mt20 { margin-top: 20px; }
 .mb0 { margin-bottom: 0px; }
-.pb0 { padding-bottom: 0px; }
 .ma0 { margin: 0px; }
+
 .pa0 { padding: 0px; }
+.pb0 { padding-bottom: 0px; }
+.pb20 { padding-bottom: 20px; }
 /* --------------- / Margins and Paddings --------------- */
 
 /* --------------- Header --------------- */
@@ -91,6 +92,10 @@ strong {
 /* --------------- Layout --------------- */
 .layout-content {
 
+}
+.game-panel {
+    background-color: #fff;
+    box-shadow: 0px 0px 5px #ccc;
 }
 .button-game {
     display: block;
@@ -168,9 +173,9 @@ strong {
     position:absolute;
     width:100%;
     height:100%;
-    -moz-box-shadow:inset 0px 2px 11px 13px #f3f3f3;
-    -webkit-box-shadow:inset 0px 2px 11px 13px #f3f3f3;
-    box-shadow:inset 0px 2px 11px 13px #f3f3f3;
+    -moz-box-shadow:inset 0px 0px 5px 10px #fff;
+    -webkit-box-shadow:inset 0px 0px 5px 10px #fff;
+    box-shadow:inset 0px 0px 5px 10px #fff;
 }
 .icon-green { color: #0FDD84; }
 .icon-gray { color: #999999; }

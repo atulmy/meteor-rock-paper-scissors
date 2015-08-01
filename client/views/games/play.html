@@ -1,7 +1,47 @@
 <template name="gamesPlay">
 
-    <div class="col col-md-6 col-md-offset-3">
+    <div class="col col-md-3">
+        <h3 class="text-center"><span class="glyphicon glyphicon-flash"></span> Sets</h3>
 
+        <div class="list-group list-group-games">
+
+            {{# if gameSets }}
+
+                {{# each gameSets }}
+
+                    {{# if notEqualTo game.current.set setNumber }}
+
+                        <div class="list-group-item gray">
+                            <h4 class="list-group-item-heading">Set {{ increment setNumber }}</h4>
+
+                            <p class="list-group-item-text">
+                                <strong>{{ game.playerOne.name }}</strong>: {{ playerOneSelection }} &bull;
+                                <strong>{{ game.playerTwo.name }}</strong>: {{ playerTwoSelection }}
+                            </p>
+                        </div>
+
+                    {{ else }}
+
+                        <div class="list-group-item gray">
+                            <p class="list-group-item-text text-center">Each set result will show up here.</p>
+                        </div>
+
+                    {{/ if }}
+
+                {{/ each }}
+
+            {{ else }}
+
+                <div class="list-group-item gray">
+                    <p class="list-group-item-text text-center">Each set result will show up here.</p>
+                </div>
+
+            {{/ if }}
+
+        </div>
+    </div>
+
+    <div class="col col-md-6 game-panel pb20">
         <div class="col col-sm-12 text-center">
             <h3 class="text-center">{{ game.title }}</h3>
 
@@ -153,6 +193,60 @@
                 <div id="animated-example" class="animated bounceInRight">{{ game.playerTwo.name }}: <img src="/images/button-{{ playerTwoSelectionText }}.png" alt="{{ playerTwoSelectionText }}" /></div>
             </div>
         {{/ if }}
+
+    </div>
+
+    <div class="col col-md-3">
+
+        {{# if gameChatShow }}
+
+            <h3 class="text-center"><span class="glyphicon glyphicon-comment"></span> Chat</h3>
+
+            {{# if game.ai }}
+
+                <div class="list-group list-group-games mb0" id="game-chat-conversations">
+                    <div class="list-group-item gray">
+                        <h4 class="list-group-item-heading">Not available for single player game.</h4>
+                        <p class="list-group-item-text">You are forever alone, remember?</p>
+                    </div>
+                </div>
+
+            {{ else }}
+
+                <div class="list-group list-group-games mb0" id="game-chat-conversations">
+
+                    {{# each game.chat.conversation }}
+
+                        <div class="list-group-item gray">
+                            <h4 class="list-group-item-heading">{{ name }}</h4>
+
+                            <p class="list-group-item-text">{{ text }}</p>
+                        </div>
+
+                    {{/ each }}
+
+                </div>
+
+                {{#if gameChatAllow }}
+
+                    <form id="form-game-chat">
+                        <div class="input-group" style="margin-top: -1px;">
+                            <input type="text" class="form-control" id="form-game-chat-text" placeholder="type here...">
+
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" id="form-game-chat-send" type="submit">Send</button>
+                        </span>
+                        </div>
+                    </form>
+
+                {{/ if }}
+
+                {{ gameChatScrollDiv }}
+
+            {{/ if }}
+
+        {{/ if }}
+
     </div>
 
     <audio src="/audio/you-wouldnt-believe.mp3" id="audio-score" class="display-none"></audio>
@@ -160,5 +254,7 @@
     <audio src="/audio/youve-been-informed.mp3" id="audio-start-set" class="display-none"></audio>
 
     <audio src="/audio/game-selections.mp3" id="audio-selections" class="display-none"></audio>
+
+    <audio src="/audio/game-your-turn.mp3" id="audio-chat" class="display-none"></audio>
 
 </template>

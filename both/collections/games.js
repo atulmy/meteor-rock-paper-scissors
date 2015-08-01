@@ -41,7 +41,8 @@ Meteor.methods({
             ai: gameAi,
             bestOf: gameBestOf,
             current: {set: 0, interval: 0, showAnimation: false, playAgain: false},
-            is: {playing: false, completed: false, public: gameIsPublic}
+            is: {playing: false, completed: false, public: gameIsPublic},
+            chat: {show: true, conversation: [{id: "0", name: "Devil", text: "Swear against each other here"}]}
         };
 
         // insert new game
@@ -94,11 +95,12 @@ Meteor.methods({
     },
 
     // called after choosing object (rock / paper / scissor) for both the user
-    gameAddSet: function(game, playerSelection) {
+    gameAddSet: function(game, playerSelection, computerSelection) {
         var sets = game.sets;
 
         var currentSet = game.current.set;
-        var updateCurrentSet = currentSet;
+        var responseGameAddSet = {updateCurrentSet: currentSet, tie: false};
+
         if(!sets) {
             sets = [];
             sets[currentSet] = {setNumber: currentSet};
@@ -119,31 +121,33 @@ Meteor.methods({
         }
 
         if(game.ai) {
-            var xmin = 0;
-            var xmax = 2;
-            var computerSelection = ['rock', 'paper', 'scissors'];
-            sets[currentSet].playerTwoSelection = computerSelection[Math.floor( Math.random() * (xmax + 1 - xmin) + xmin )];
+            sets[currentSet].playerTwoSelection = computerSelection;
         }
 
         if(typeof sets[currentSet].playerOneSelection !== 'undefined' && typeof sets[currentSet].playerTwoSelection !== 'undefined') {
-            updateCurrentSet++;
+            responseGameAddSet.updateCurrentSet++;
             if(
                 sets[currentSet].playerOneSelection === 'scissors' && sets[currentSet].playerTwoSelection === 'paper' ||
                 sets[currentSet].playerOneSelection === 'paper' && sets[currentSet].playerTwoSelection === 'rock' ||
                 sets[currentSet].playerOneSelection === 'rock' && sets[currentSet].playerTwoSelection === 'scissors'
             ) {
                 Games.update(game._id, {$inc: {"playerOne.score": 1}});
+                responseGameAddSet.tie = false
             } else if(
                 sets[currentSet].playerTwoSelection === 'scissors' && sets[currentSet].playerOneSelection === 'paper' ||
                 sets[currentSet].playerTwoSelection === 'paper' && sets[currentSet].playerOneSelection === 'rock' ||
                 sets[currentSet].playerTwoSelection === 'rock' && sets[currentSet].playerOneSelection === 'scissors'
             ) {
                 Games.update(game._id, {$inc: {"playerTwo.score": 1}});
+                responseGameAddSet.tie = false
+            } else {
+                responseGameAddSet.tie = true;
             }
         }
 
-        Games.update(game._id, {$set: {"current.set": updateCurrentSet, sets: sets}});
-        return updateCurrentSet;
+        Games.update(game._id, {$set: {"current.set": responseGameAddSet.updateCurrentSet, sets: sets}});
+
+        return responseGameAddSet;
     },
 
     gameUpdateCurrentInterval: function(gameId, count) {
@@ -205,6 +209,20 @@ Meteor.methods({
             check(playAgainGameId, String);
 
             Games.update(game._id, {$set: {"current.playAgainGameId": playAgainGameId}});
+        }
+    },
+
+    gameUpdateChatConversation: function(gameId, text) {
+        var game = Games.findOne({_id: gameId});
+        if(game) {
+            // validate data
+            check(Meteor.userId(), String);
+            check(gameId, String);
+            check(text, String);
+
+            game.chat.conversation.push({id: Meteor.userId(), name: Meteor.user().profile.name, text: text});
+
+            Games.update(game._id, {$set: {"chat": game.chat}});
         }
     }
 });

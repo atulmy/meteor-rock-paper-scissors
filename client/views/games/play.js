@@ -139,7 +139,7 @@ Template.gamesPlay.helpers({
     showGameOverlay: function() {
         var game = Games.findOne({_id: Session.get('gameId')});
         if(game) {
-            return (game.current.interval > 0);
+            return (game.current.interval > 0 && !game.is.completed);
         }
         return false;
     },
@@ -160,7 +160,7 @@ Template.gamesPlay.helpers({
     gameCurrentSet: function() {
         var game = Games.findOne({_id: Session.get('gameId')});
         if(game) {
-            return game.current.set;
+            return ++game.current.set;
         }
         return 1;
     },
@@ -205,6 +205,52 @@ Template.gamesPlay.helpers({
             }
         }
         return false;
+    },
+    gameSets: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        console.log(game);
+        if(game) {
+            if(typeof game.sets !== 'undefined' && game.sets.length > 0 && game.sets[0].playerOneSelection !== '' && game.sets[0].playerTwoSelection !== '') {
+                return game.sets;
+            }
+        }
+        return false;
+    },
+
+    gameChatShow: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            if(game.chat) {
+                return true;
+            }
+        }
+        return false;
+    },
+    gameChatAllow: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            if(game.chat && (Meteor.userId() === game.playerOne.id || Meteor.userId() === game.playerTwo.id)) {
+                return true;
+            }
+        }
+        return false;
+    },
+    gameChatScrollDiv: function() {
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if(game) {
+            if(game.chat) {
+                var gameChatConversationLength = Session.get('gameChatConversationLength');
+                if(typeof gameChatConversationLength !== 'undefined' && gameChatConversationLength !== game.chat.conversation.length) {
+                    $("#game-chat-conversations").animate({ scrollTop: $('#game-chat-conversations')[0].scrollHeight}, 1000);
+                    $('#audio-chat')[0].play();
+                    Session.set('gameChatConversationLength', game.chat.conversation.length);
+                }
+            }
+        }
+        return '';
+    },
+    gameChatUserName: function() {
+        return 'A';
     }
 });
 
@@ -270,13 +316,22 @@ Template.gamesPlay.events({
 
             template.$(event.currentTarget).addClass('opacity-2');
 
-            Meteor.call('gameAddSet', game, selection, function (error, response) {
-                console.log('response '+response);
+            var computerSelection = '';
+            if(game.ai) {
+                var xmin = 0;
+                var xmax = 2;
+                var computerSelectionOptions = ['rock', 'paper', 'scissors'];
+                computerSelection = computerSelectionOptions[Math.floor( Math.random() * (xmax + 1 - xmin) + xmin )];
+                console.log(computerSelection);
+            }
+
+            Meteor.call('gameAddSet', game, selection, computerSelection, function (error, responseGameAddSet) {
+                console.log('gameAddSet');
                 if (!error) {
-                    if(game.bestOf !== 0 && response === game.bestOf) {
+                    if(game.bestOf !== 0 && responseGameAddSet.updateCurrentSet === game.bestOf) {
 
                         // finish game
-                        Meteor.call('gameUpdateIsCompletedAndIsPlaying', game._id, function (error, response) {
+                        Meteor.call('gameUpdateIsCompletedAndIsPlaying', game._id, function (error, responseGameUpdateIsCompletedAndIsPlaying) {
                             console.log('gameUpdateIsCompletedAndIsPlaying');
                             if (error) {
                                 //alert(error.reason);
@@ -285,7 +340,7 @@ Template.gamesPlay.events({
                             }
                         });
                     } else {
-                        if (response != currentSet) {
+                        if (responseGameAddSet.updateCurrentSet != currentSet) {
                             $('.button-game').removeClass('opacity-2');
 
                             game = Games.findOne({_id: Session.get('gameId')});
@@ -297,12 +352,18 @@ Template.gamesPlay.events({
                                 Meteor.call('gameUpdateCurrentShowAnimation', game._id, true, function () {
                                     $('#audio-selections')[0].play();
                                     console.log('gameUpdateCurrentShowAnimation');
-                                    setTimeout(function() {
+                                    setTimeout(function () {
                                         Meteor.call('gameUpdateCurrentShowAnimation', game._id, false, function () {
                                             console.log('gameUpdateCurrentShowAnimation');
                                         });
                                     }, 2000);
                                 });
+
+                                // check if tie
+                                var gameShowRPSTime = 4000;
+                                if(responseGameAddSet.tie) {
+                                    gameShowRPSTime = 2000;
+                                }
 
                                 setTimeout(function(){
                                     // alert start
@@ -311,11 +372,11 @@ Template.gamesPlay.events({
                                     }, intervalWait);
 
                                     // show Rock Paper Scissors overlay
-                                    Meteor.call('gameShowRPS', game._id, interval, intervalWait, function (error, response) {
+                                    Meteor.call('gameShowRPS', game._id, interval, intervalWait, function (error, responseGameShowRPS) {
                                         console.log('gameShowRPS');
-                                        interval = response;
+                                        interval = responseGameShowRPS;
                                     });
-                                }, 4000);
+                                }, gameShowRPSTime);
                             });
                         }
                     }
@@ -370,6 +431,27 @@ Template.gamesPlay.events({
                 }
             });
         }
+    },
+
+    'submit #form-game-chat':  function(event, template) {
+        event.preventDefault();
+
+        var game = Games.findOne({_id: Session.get('gameId')});
+        if (game) {
+
+            var text = template.$('#form-game-chat-text').val();
+            template.$('#form-game-chat-send').attr('disabled', 'disabled');
+
+            Meteor.call('gameUpdateChatConversation', game._id, text, function(error, response) {
+                console.log('gameUpdateChatConversation');
+
+                if(!error) {
+                    template.$('#form-game-chat-text').val('');
+                }
+
+                template.$('#form-game-chat-send').removeAttr('disabled');
+            });
+        }
     }
 });
 
@@ -378,6 +460,8 @@ Template.gamesPlay.rendered = function () {
     var userId = Meteor.userId();
     var game = Games.findOne({_id: Session.get('gameId')});
     if(game) {
+        Session.set('gameChatConversationLength', game.chat.conversation.length);
+
         if((game.playerOne.id !== userId || game.ai) && game.is.completed === false && game.is.playing !== true) {
 
             // Player joined
