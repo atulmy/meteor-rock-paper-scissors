@@ -131,6 +131,7 @@ Meteor.methods({
                 sets[currentSet].playerOneSelection === 'paper' && sets[currentSet].playerTwoSelection === 'rock' ||
                 sets[currentSet].playerOneSelection === 'rock' && sets[currentSet].playerTwoSelection === 'scissors'
             ) {
+                sets[currentSet].result = game.playerOne.name;
                 Games.update(game._id, {$inc: {"playerOne.score": 1}});
                 responseGameAddSet.tie = false
             } else if(
@@ -138,9 +139,11 @@ Meteor.methods({
                 sets[currentSet].playerTwoSelection === 'paper' && sets[currentSet].playerOneSelection === 'rock' ||
                 sets[currentSet].playerTwoSelection === 'rock' && sets[currentSet].playerOneSelection === 'scissors'
             ) {
+                sets[currentSet].result = game.playerTwo.name;
                 Games.update(game._id, {$inc: {"playerTwo.score": 1}});
                 responseGameAddSet.tie = false
             } else {
+                sets[currentSet].result = 'Draw';
                 responseGameAddSet.tie = true;
             }
         }

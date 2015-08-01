@@ -12,7 +12,7 @@
                     {{# if notEqualTo game.current.set setNumber }}
 
                         <div class="list-group-item gray">
-                            <h4 class="list-group-item-heading">Set {{ increment setNumber }}</h4>
+                            <h4 class="list-group-item-heading">Set {{ increment setNumber }}: {{ result }}</h4>
 
                             <p class="list-group-item-text">
                                 <strong>{{ game.playerOne.name }}</strong>: {{ playerOneSelection }} &bull;
@@ -212,9 +212,9 @@
                     {{# each game.chat.conversation }}
 
                         <div class="list-group-item gray">
-                            <h4 class="list-group-item-heading">{{ name }}</h4>
+                            <h4 class="list-group-item-heading">{{ text }}</h4>
 
-                            <p class="list-group-item-text">{{ text }}</p>
+                            <p class="list-group-item-text">{{ name }}</p>
                         </div>
 
                     {{/ each }}
