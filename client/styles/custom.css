@@ -47,6 +47,10 @@ strong {
     display: block;
     clear: both;
 }
+.nav-tabs li {
+    display: table-cell;
+    width: 1%;
+}
 /* --------------- / Bootstrap Overrides --------------- */
 
 /* --------------- Margins and Paddings --------------- */
@@ -434,6 +438,9 @@ strong {
     }
     .device-small {
         display: none;
+    }
+    .tab-content > .tab-pane {
+        display: block;
     }
 }
 /* --------------- / Responsive Fixes --------------- */

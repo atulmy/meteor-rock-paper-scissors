@@ -1,246 +1,258 @@
 <template name="gamesPlay">
 
-    <div class="col col-md-3">
-        <h3 class="text-center"><span class="glyphicon glyphicon-flash"></span> Sets</h3>
+    <div class="col col-xs-12">
+        <ul class="nav nav-tabs device-small nav-justified" role="tablist">
+            <li role="presentation"><a href="#game-sets" aria-controls="game-sets" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-flash"></span> Sets</a></li>
 
-        <div class="list-group list-group-games">
+            <li role="presentation" class="active"><a href="#game-panel" aria-controls="game-panel" role="tab" data-toggle="tab">Play</a></li>
 
-            {{# if gameSets }}
-
-                {{# each gameSets }}
-
-                    {{# if notEqualTo game.current.set setNumber }}
-
-                        <div class="list-group-item gray">
-                            <h4 class="list-group-item-heading">Set {{ increment setNumber }}: {{ result }}</h4>
-
-                            <p class="list-group-item-text">
-                                <strong>{{ game.playerOne.name }}</strong>: {{ playerOneSelection }} &bull;
-                                <strong>{{ game.playerTwo.name }}</strong>: {{ playerTwoSelection }}
-                            </p>
-                        </div>
-
-                    {{/ if }}
-
-                {{/ each }}
-
-            {{ else }}
-
-                <div class="list-group-item gray">
-                    <p class="list-group-item-text text-center">Each set result will show up here.</p>
-                </div>
-
-            {{/ if }}
-
-        </div>
+            <li role="presentation"><a href="#game-chat" aria-controls="game-chat" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
+        </ul>
     </div>
 
-    <div class="col col-md-6 game-panel pb20 pt20">
-        <div class="col col-sm-12 text-center">
-            <h3 class="text-center mt0">{{ game.title }}</h3>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane col col-xs-12 col-sm-3" id="game-sets">
+            <h3 class="text-center"><span class="glyphicon glyphicon-flash"></span> Sets</h3>
 
-            <p class="mb0">
-                {{#if game.is.playing }}
-                    {{#if gameIndefinite  }}
-                        Current Set: {{ gameCurrentSet }}
-                    {{ else }}
-                        Set: {{ gameCurrentSet }} out of {{ game.bestOf }}
-                    {{/ if }}
-                {{/ if }}
+            <div class="list-group list-group-games">
 
-                {{#if game.is.completed }}
-                    {{# if gameIndefinite }}
-                        Sets Played: {{ game.current.set }}
-                    {{ else }}
-                        Best of {{ game.bestOf }}
-                    {{/ if }}
-                {{/ if }}
-            </p>
+                {{# if gameSets }}
 
-            <hr/>
+                    {{# each gameSets }}
 
-            <div class="clearfix">
-                <div class="col col-xs-5 text-right">
-                    {{ game.playerOne.name }}
-                </div>
-                <div class="col col-xs-2 text-center">
-                    vs.
-                </div>
-                <div class="col col-xs-5 text-left">
-                    {{ game.playerTwo.name }}
-                </div>
-            </div>
-            <div class="clearfix">
-                <div class="col col-xs-5 text-right player-one-score">
-                    {{ playerOneScore }} {{ playerOnePointText }}
-                </div>
-                <div class="col col-xs-2 text-center"></div>
-                <div class="col col-xs-5 text-left player-two-score">
-                    {{ playerTwoScore }} {{ playerTwoPointText }}
-                </div>
-            </div>
+                        {{# if notEqualTo game.current.set setNumber }}
 
-            <hr/>
-        </div>
+                            <div class="list-group-item gray">
+                                <h4 class="list-group-item-heading">Set {{ increment setNumber }}: {{ result }}</h4>
 
-        {{#if game.is.completed }}
+                                <p class="list-group-item-text">
+                                    <strong>{{ game.playerOne.name }}</strong>: {{ playerOneSelection }} &bull;
+                                    <strong>{{ game.playerTwo.name }}</strong>: {{ playerTwoSelection }}
+                                </p>
+                            </div>
 
-            <div class="col col-sm-12 text-center">
-                {{#if game.is.completed }}
-                    <p><span class="glyphicon glyphicon-star icon-red"></span> {{{ winnerName }}} <span class="glyphicon glyphicon-star icon-red"></span></p>
-                {{/ if }}
-
-                <p>
-                    Game finished &bull;
-                    {{# if allowPlayAgain }}
-                        <a href="#" title="Play again" class="game-play-again"><span class="glyphicon glyphicon-repeat"></span> Play again</a> &bull;
-                    {{/ if }}
-                    <a href="{{pathFor route='home'}}" title="Play more"><span class="glyphicon glyphicon-chevron-right"></span> Play more</a>
-                </p>
-
-                {{# if gamePlayAgain }}
-                    <p style="margin-top: 70px;">{{> spinner}}</p>
-                    <p>Restarting the game...</p>
-                {{/ if }}
-
-                {{# if playFinishGameSound }}
-                    <audio src="/audio/game-finished.mp3" class="display-none" autoplay></audio>
-                    {{ playFinishGameSoundStop }}
-                {{/ if }}
-            </div>
-
-        {{ else }}
-
-            {{#if notEqualTo game.playerTwo.id "0" }}
-
-                {{#if game.is.playing }}
-
-                    <div class="col col-sm-12 clearfix">
-                        <div class="col col-xs-4 text-center">
-                            <a href="#" class="button-game button-rock transition transition-grow {{# if equalTo currentlySelected "rock" }} opacity-2 {{/ if }}" selection="rock" title="Click to select Rock">
-                                <img src="/images/button-rock.png" class="img-responsive m0auto"/>
-                            </a>
-
-                            <p>ROCK</p>
-                        </div>
-
-                        <div class="col col-xs-4 text-center">
-                            <a href="#" class="button-game button-paper transition transition-grow {{# if equalTo currentlySelected "paper" }} opacity-2 {{/ if }}" selection="paper" title="Click to select Paper">
-                                <img src="/images/button-paper.png" class="img-responsive m0auto"/>
-                            </a>
-
-                            <p>PAPER</p>
-                        </div>
-
-                        <div class="col col-xs-4 text-center">
-                            <a href="#" class="button-game button-scissors transition transition-grow {{# if equalTo currentlySelected "scissors" }} opacity-2 {{/ if }}" selection="scissors" title="Click to select Scissors">
-                                <img src="/images/button-scissors.png" class="img-responsive m0auto"/>
-                            </a>
-
-                            <p>SCISSORS</p>
-                        </div>
-                    </div>
-
-                    <div class="col col-sm-12 text-center">
-                        <hr/>
-
-                        <button type="button" class="btn btn-default button-finish"><span class="glyphicon glyphicon-flag"></span> Finish</button>
-                    </div>
-                {{ else }}
-                    <div class="col col-sm-12 text-center">
-                        <div class="col col-sm-8 col-md-offset-2">
-                            <a title="Yes, I'm ready!" href="#" class="shadow text-center button-ready cursor-pointer"><img src="/images/shall-we-begin.gif" class="img-responsive" alt="shall-we-begin?"/></a>
-                        </div>
-                        <p class="text-center clearfix">
-                            <button type="button" class="btn btn-success button-ready mt20" title="Yes, I'm ready!">Yes, I'm ready!</button>
-                        </p>
-                        <p class="text-center">{{ game.playerOne.name }} is {{{ playerOneReadyText }}}</p>
-                        <p class="text-center">{{ game.playerTwo.name }} is {{{ playerTwoReadyText }}}</p>
-                    </div>
-                {{/ if }}
-
-            {{ else }}
-                <div class="col col-sm-12 text-center">
-                    <p>{{> spinner}}</p>
-
-                    {{# if game.ai }}
-                        <p style="padding-top: 110px;">Waiting for computer to join...</p>
-                    {{ else }}
-                        <p style="padding-top: 110px;">Waiting for another player to join...</p>
-
-                        <p>Share this URL: {{ currentUrl }}</p>
-                    {{/ if}}
-                </div>
-            {{/ if }}
-
-        {{/ if }}
-
-        {{#if showGameOverlay }}
-            <div id="game-overlay">
-                {{ getIntervalText }}
-            </div>
-        {{/ if }}
-
-        {{#if showAnimation }}
-            <div id="game-overlay-opaque">
-                <div id="animated-example" class="animated bounceInLeft">{{ game.playerOne.name }}: <img src="/images/button-{{ playerOneSelectionText }}.png" alt="{{ playerOneSelectionText }}" /></div>
-                <div id="animated-example" class="animated bounceInRight">{{ game.playerTwo.name }}: <img src="/images/button-{{ playerTwoSelectionText }}.png" alt="{{ playerTwoSelectionText }}" /></div>
-            </div>
-        {{/ if }}
-
-    </div>
-
-    <div class="col col-md-3 pb20">
-
-        {{# if gameChatShow }}
-
-            <h3 class="text-center"><span class="glyphicon glyphicon-comment"></span> Chat</h3>
-
-            {{# if game.ai }}
-
-                <div class="list-group list-group-games mb0" id="game-chat-conversations">
-                    <div class="list-group-item gray">
-                        <h4 class="list-group-item-heading">Not available for single player game.</h4>
-                        <p class="list-group-item-text">You are forever alone, remember?</p>
-                    </div>
-                </div>
-
-            {{ else }}
-
-                <div class="list-group list-group-games mb0" id="game-chat-conversations">
-
-                    {{# each game.chat.conversation }}
-
-                        <div class="list-group-item gray">
-                            <h4 class="list-group-item-heading">{{ text }}</h4>
-
-                            <p class="list-group-item-text">{{ name }}</p>
-                        </div>
+                        {{/ if }}
 
                     {{/ each }}
 
-                </div>
+                {{ else }}
 
-                {{#if gameChatAllow }}
-
-                    <form id="form-game-chat">
-                        <div class="input-group" style="margin-top: -1px;">
-                            <input type="text" class="form-control" id="form-game-chat-text" placeholder="type here...">
-
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" id="form-game-chat-send" type="submit">Send</button>
-                        </span>
-                        </div>
-                    </form>
+                    <div class="list-group-item gray">
+                        <p class="list-group-item-text text-center">Each set result will show up here.</p>
+                    </div>
 
                 {{/ if }}
 
-                {{ gameChatScrollDiv }}
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane active col col-xs-12 col-sm-6 game-panel pb20 pt20" id="game-panel">
+            <div class="col col-sm-12 text-center">
+                <h3 class="text-center mt0">{{ game.title }}</h3>
+
+                <p class="mb0">
+                    {{#if game.is.playing }}
+                        {{#if gameIndefinite  }}
+                            Current Set: {{ gameCurrentSet }}
+                        {{ else }}
+                            Set: {{ gameCurrentSet }} out of {{ game.bestOf }}
+                        {{/ if }}
+                    {{/ if }}
+
+                    {{#if game.is.completed }}
+                        {{# if gameIndefinite }}
+                            Sets Played: {{ game.current.set }}
+                        {{ else }}
+                            Best of {{ game.bestOf }}
+                        {{/ if }}
+                    {{/ if }}
+                </p>
+
+                <hr/>
+
+                <div class="clearfix">
+                    <div class="col col-xs-5 text-right">
+                        {{ game.playerOne.name }}
+                    </div>
+                    <div class="col col-xs-2 text-center">
+                        vs.
+                    </div>
+                    <div class="col col-xs-5 text-left">
+                        {{ game.playerTwo.name }}
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <div class="col col-xs-5 text-right player-one-score">
+                        {{ playerOneScore }} {{ playerOnePointText }}
+                    </div>
+                    <div class="col col-xs-2 text-center"></div>
+                    <div class="col col-xs-5 text-left player-two-score">
+                        {{ playerTwoScore }} {{ playerTwoPointText }}
+                    </div>
+                </div>
+
+                <hr/>
+            </div>
+
+            {{#if game.is.completed }}
+
+                <div class="col col-sm-12 text-center">
+                    {{#if game.is.completed }}
+                        <p><span class="glyphicon glyphicon-star icon-red"></span> {{{ winnerName }}} <span class="glyphicon glyphicon-star icon-red"></span></p>
+                    {{/ if }}
+
+                    <p>
+                        Game finished &bull;
+                        {{# if allowPlayAgain }}
+                            <a href="#" title="Play again" class="game-play-again"><span class="glyphicon glyphicon-repeat"></span> Play again</a> &bull;
+                        {{/ if }}
+                        <a href="{{pathFor route='home'}}" title="Play more"><span class="glyphicon glyphicon-chevron-right"></span> Play more</a>
+                    </p>
+
+                    {{# if gamePlayAgain }}
+                        <p style="margin-top: 70px;">{{> spinner}}</p>
+                        <p>Restarting the game...</p>
+                    {{/ if }}
+
+                    {{# if playFinishGameSound }}
+                        <audio src="/audio/game-finished.mp3" class="display-none" autoplay></audio>
+                        {{ playFinishGameSoundStop }}
+                    {{/ if }}
+                </div>
+
+            {{ else }}
+
+                {{#if notEqualTo game.playerTwo.id "0" }}
+
+                    {{#if game.is.playing }}
+
+                        <div class="col col-sm-12 clearfix">
+                            <div class="col col-xs-4 text-center">
+                                <a href="#" class="button-game button-rock transition transition-grow {{# if equalTo currentlySelected "rock" }} opacity-2 {{/ if }}" selection="rock" title="Click to select Rock">
+                                    <img src="/images/button-rock.png" class="img-responsive m0auto"/>
+                                </a>
+
+                                <p>ROCK</p>
+                            </div>
+
+                            <div class="col col-xs-4 text-center">
+                                <a href="#" class="button-game button-paper transition transition-grow {{# if equalTo currentlySelected "paper" }} opacity-2 {{/ if }}" selection="paper" title="Click to select Paper">
+                                    <img src="/images/button-paper.png" class="img-responsive m0auto"/>
+                                </a>
+
+                                <p>PAPER</p>
+                            </div>
+
+                            <div class="col col-xs-4 text-center">
+                                <a href="#" class="button-game button-scissors transition transition-grow {{# if equalTo currentlySelected "scissors" }} opacity-2 {{/ if }}" selection="scissors" title="Click to select Scissors">
+                                    <img src="/images/button-scissors.png" class="img-responsive m0auto"/>
+                                </a>
+
+                                <p>SCISSORS</p>
+                            </div>
+                        </div>
+
+                        <div class="col col-sm-12 text-center">
+                            <hr/>
+
+                            <button type="button" class="btn btn-default button-finish"><span class="glyphicon glyphicon-flag"></span> Finish</button>
+                        </div>
+                    {{ else }}
+                        <div class="col col-sm-12 text-center">
+                            <div class="col col-sm-8 col-md-offset-2">
+                                <a title="Yes, I'm ready!" href="#" class="shadow text-center button-ready cursor-pointer"><img src="/images/shall-we-begin.gif" class="img-responsive" alt="shall-we-begin?"/></a>
+                            </div>
+                            <p class="text-center clearfix">
+                                <button type="button" class="btn btn-success button-ready mt20" title="Yes, I'm ready!">Yes, I'm ready!</button>
+                            </p>
+                            <p class="text-center">{{ game.playerOne.name }} is {{{ playerOneReadyText }}}</p>
+                            <p class="text-center">{{ game.playerTwo.name }} is {{{ playerTwoReadyText }}}</p>
+                        </div>
+                    {{/ if }}
+
+                {{ else }}
+                    <div class="col col-sm-12 text-center">
+                        <p>{{> spinner}}</p>
+
+                        {{# if game.ai }}
+                            <p style="padding-top: 110px;">Waiting for computer to join...</p>
+                        {{ else }}
+                            <p style="padding-top: 110px;">Waiting for another player to join...</p>
+
+                            <p>Share this URL: {{ currentUrl }}</p>
+                        {{/ if}}
+                    </div>
+                {{/ if }}
 
             {{/ if }}
 
-        {{/ if }}
+            {{#if showGameOverlay }}
+                <div id="game-overlay">
+                    {{ getIntervalText }}
+                </div>
+            {{/ if }}
 
+            {{#if showAnimation }}
+                <div id="game-overlay-opaque">
+                    <div id="animated-example" class="animated bounceInLeft">{{ game.playerOne.name }}: <img src="/images/button-{{ playerOneSelectionText }}.png" alt="{{ playerOneSelectionText }}" /></div>
+                    <div id="animated-example" class="animated bounceInRight">{{ game.playerTwo.name }}: <img src="/images/button-{{ playerTwoSelectionText }}.png" alt="{{ playerTwoSelectionText }}" /></div>
+                </div>
+            {{/ if }}
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane col col-xs-12 col-sm-3 pb20" id="game-chat">
+
+            {{# if gameChatShow }}
+
+                <h3 class="text-center"><span class="glyphicon glyphicon-comment"></span> Chat</h3>
+
+                {{# if game.ai }}
+
+                    <div class="list-group list-group-games mb0" id="game-chat-conversations">
+                        <div class="list-group-item gray">
+                            <h4 class="list-group-item-heading">Not available for single player game.</h4>
+                            <p class="list-group-item-text">You are forever alone, remember?</p>
+                        </div>
+                    </div>
+
+                {{ else }}
+
+                    <div class="list-group list-group-games mb0" id="game-chat-conversations">
+
+                        {{# each game.chat.conversation }}
+
+                            <div class="list-group-item gray">
+                                <h4 class="list-group-item-heading">{{ text }}</h4>
+
+                                <p class="list-group-item-text">{{ name }}</p>
+                            </div>
+
+                        {{/ each }}
+
+                    </div>
+
+                    {{#if gameChatAllow }}
+
+                        <form id="form-game-chat">
+                            <div class="input-group" style="margin-top: -1px;">
+                                <input type="text" class="form-control" id="form-game-chat-text" placeholder="type here...">
+
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" id="form-game-chat-send" type="submit">Send</button>
+                            </span>
+                            </div>
+                        </form>
+
+                    {{/ if }}
+
+                    {{ gameChatScrollDiv }}
+
+                {{/ if }}
+
+            {{/ if }}
+
+        </div>
     </div>
 
     <audio src="/audio/you-wouldnt-believe.mp3" id="audio-score" class="display-none"></audio>

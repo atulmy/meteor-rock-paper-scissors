@@ -1,61 +1,73 @@
 <template name="gamesList">
 
-    <div class="col col-md-4">
-        {{#if lessThan gamesCount 5 }}{{/if }}
+    <div class="col col-xs-12">
+        <ul class="nav nav-tabs device-small nav-justified" role="tablist">
+            <li role="presentation" class="active"><a href="#game-create" aria-controls="game-create" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-send icon-red icon-small"></span> Create</a></li>
 
-        {{> gamesCreate }}
+            <li role="presentation"><a href="#game-online" aria-controls="game-online" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-star icon-green icon-small"></span> Online</a></li>
+
+            <li role="presentation"><a href="#game-finished" aria-controls="game-finished" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-star icon-gray icon-small"></span> Finished</a></li>
+        </ul>
     </div>
 
-    <div class="col col-md-4">
-        <h3><span class="glyphicon glyphicon-star icon-green icon-small"></span> Online Games</h3>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active col col-xs-12 col-sm-4" id="game-create">
+            {{#if lessThan gamesCount 5 }}{{/if }}
 
-        <div class="list-group list-group-games">
-            {{#if gamesCount }}
-                {{# each games }}
-                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
-                        <h4 class="list-group-item-heading">{{ title }}</h4>
+            {{> gamesCreate }}
+        </div>
 
-                        <p class="list-group-item-text">Created by <span class="text-underline">{{ playerOne.name }}</span> &bull; Best of {{ bestOf }}</p>
-                    </a>
-                {{/ each }}
+        <div role="tabpanel" class="tab-pane col col-xs-12 col-sm-4" id="game-online">
+            <h3><span class="glyphicon glyphicon-star icon-green icon-small"></span> Online Games</h3>
+
+            <div class="list-group list-group-games">
+                {{#if gamesCount }}
+                    {{# each games }}
+                        <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to play - {{ title }}">
+                            <h4 class="list-group-item-heading">{{ title }}</h4>
+
+                            <p class="list-group-item-text">Created by <span class="text-underline">{{ playerOne.name }}</span> &bull; Best of {{ bestOf }}</p>
+                        </a>
+                    {{/ each }}
+                {{ else }}
+                    <div class="list-group-item gray">
+                        <h4 class="list-group-item-heading">No open games to play. </h4>
+
+                        <p class="list-group-item-text">Why don't you create one and play like a boss <span class="glyphicon glyphicon-sunglasses"></span>?</p>
+                    </div>
+                {{/if }}
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane col col-xs-12 col-sm-4" id="game-finished">
+            <h3><span class="glyphicon glyphicon-star icon-gray icon-small"></span> Finished Games</h3>
+
+            {{#if gamesFinishedCount }}
+                <div class="list-group list-group-games">
+                    {{# each gamesFinished }}
+                        <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to view results">
+                            <h4 class="list-group-item-heading">{{ title }}</h4>
+
+                            <p class="list-group-item-text">
+                                <span class="text-underline {{# if equalTo playerOne.id winner.id }} icon-green {{/ if }}">{{ playerOne.name }}</span>
+                                vs.
+                                <span class="text-underline {{# if equalTo playerTwo.id winner.id }} icon-green {{/ if }}">{{ playerTwo.name }}</span>
+                                &bull;
+                                Score: {{ playerOne.score }} / {{ playerTwo.score }} &bull;
+                                {{# if greaterThan bestOf 0 }} Best of {{ bestOf }} {{/ if }}
+                                {{# if lessThanOrEqualTo bestOf 0 }} Best of {{ current.set }} {{/ if }}
+                            </p>
+                        </a>
+                    {{/ each }}
+                </div>
             {{ else }}
                 <div class="list-group-item gray">
-                    <h4 class="list-group-item-heading">No open games to play. </h4>
+                    <h4 class="list-group-item-heading">No finished game to show.</h4>
 
-                    <p class="list-group-item-text">Why don't you create one and play like a boss <span class="glyphicon glyphicon-sunglasses"></span>?</p>
+                    <p class="list-group-item-text">Why don't you create one and finish it like a boss <span class="glyphicon glyphicon-sunglasses"></span>?</p>
                 </div>
             {{/if }}
         </div>
-    </div>
-
-    <div class="col col-md-4">
-        <h3><span class="glyphicon glyphicon-star icon-gray icon-small"></span> Finished Games</h3>
-
-        {{#if gamesFinishedCount }}
-            <div class="list-group list-group-games">
-                {{# each gamesFinished }}
-                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to view results">
-                        <h4 class="list-group-item-heading">{{ title }}</h4>
-
-                        <p class="list-group-item-text">
-                            <span class="text-underline {{# if equalTo playerOne.id winner.id }} icon-green {{/ if }}">{{ playerOne.name }}</span>
-                            vs.
-                            <span class="text-underline {{# if equalTo playerTwo.id winner.id }} icon-green {{/ if }}">{{ playerTwo.name }}</span>
-                            &bull;
-                            Score: {{ playerOne.score }} / {{ playerTwo.score }} &bull;
-                            {{# if greaterThan bestOf 0 }} Best of {{ bestOf }} {{/ if }}
-                            {{# if lessThanOrEqualTo bestOf 0 }} Best of {{ current.set }} {{/ if }}
-                        </p>
-                    </a>
-                {{/ each }}
-            </div>
-        {{ else }}
-            <div class="list-group-item gray">
-                <h4 class="list-group-item-heading">No finished game to show.</h4>
-
-                <p class="list-group-item-text">Why don't you create one and finish it like a boss <span class="glyphicon glyphicon-sunglasses"></span>?</p>
-            </div>
-        {{/if }}
     </div>
 
     {{# if showOngoingGames }}
