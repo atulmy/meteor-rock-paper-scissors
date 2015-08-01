@@ -1,39 +1,39 @@
 <template name="commonHeader">
 
-    <div class="navbar navbar-default device-non-mobile">
-        <div class="col col-xs-4 text-left">
-            <a href="#" class="menu transition transition-grow link-game-info" title="Show Menu">
-                <span class="menu-icon glyphicon glyphicon-info-sign"></span>
+    <div class="navbar navbar-default">
+        <div class="device-big">
+            <div class="col col-sm-4 text-left">
+                <a href="#" class="menu transition transition-grow link-game-info" title="Show Menu">
+                    <span class="menu-icon glyphicon glyphicon-info-sign"></span>
 
-                <span class="menu-text">Info</span>
-            </a>
+                    <span class="menu-text">Info</span>
+                </a>
+            </div>
+
+            <div class="col col-sm-4 text-center">
+                <a href="{{pathFor route='home'}}" title="Rock &bull; Paper &bull; Scissors">
+                    <img src="/images/logo.small.png" alt="Rock &bull; Paper &bull; Scissors" class="transition transition-grow"/>
+                </a>
+            </div>
         </div>
 
-        <div class="col col-xs-4 text-center">
-            <a href="{{pathFor route='home'}}" title="Rock &bull; Paper &bull; Scissors">
-                <img src="/images/logo.small.png" alt="Rock &bull; Paper &bull; Scissors" class="transition transition-grow"/>
-            </a>
+        <div class="device-small">
+            <div class="col col-xs-12 text-center">
+                <a href="{{pathFor route='home'}}" title="Rock &bull; Paper &bull; Scissors">
+                    <img src="/images/logo.small.png" alt="Rock &bull; Paper &bull; Scissors" class="transition transition-grow"/>
+                </a>
+            </div>
+
+            <div class="col col-xs-6 text-left">
+                <a href="#" class="menu transition transition-grow link-game-info" title="Show Menu">
+                    <span class="menu-icon glyphicon glyphicon-info-sign"></span>
+
+                    <span class="menu-text">Info</span>
+                </a>
+            </div>
         </div>
 
-        <div class="col col-xs-4 text-right">{{> loginButtons }}</div>
-    </div>
-
-    <div class="navbar navbar-default device-mobile">
-        <div class="col col-xs-12 text-center">
-            <a href="{{pathFor route='home'}}" title="Rock &bull; Paper &bull; Scissors">
-                <img src="/images/logo.small.png" alt="Rock &bull; Paper &bull; Scissors" class="transition transition-grow"/>
-            </a>
-        </div>
-
-        <div class="col col-xs-6 text-left">
-            <a href="#" class="menu transition transition-grow link-game-info" title="Show Menu">
-                <span class="menu-icon glyphicon glyphicon-info-sign"></span>
-
-                <span class="menu-text">Info</span>
-            </a>
-        </div>
-
-        <div class="col col-xs-6 text-right">{{> loginButtons }}</div>
+        <div class="col col-xs-6 col-sm-4 text-right">{{> loginButtons }}</div>
     </div>
 
     <div class="overlay display-none" id="game-info">

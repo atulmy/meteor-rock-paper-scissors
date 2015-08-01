@@ -418,21 +418,21 @@ strong {
 /* --------------- / Animations --------------- */
 
 /* --------------- Responsive Fixes --------------- */
-/* mobile */
-@media (max-width: 480px) {
-    .device-non-mobile {
+/* small device */
+@media (max-width: 767px) {
+    .device-big {
         display: none;
     }
-    .device-mobile {
+    .device-small {
         display: block;
     }
 }
-/* non mobile */
-@media only screen and (min-width : 481px) {
-    .device-non-mobile {
+/* big device */
+@media only screen and (min-width : 768px) {
+    .device-big {
         display: block;
     }
-    .device-mobile {
+    .device-small {
         display: none;
     }
 }
