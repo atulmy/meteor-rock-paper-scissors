@@ -5,6 +5,8 @@ Play now: http://rps.atulmy.com
 
 Alternate URL: http://bit.ly/rock-paper-scissors-online
 
+Google Play: Coming Soon!
+
 ## Updates
 
 [2015-08-01]
@@ -15,8 +17,6 @@ Alternate URL: http://bit.ly/rock-paper-scissors-online
 ## Authors
 
 Atul Yadav - [GitHub](https://github.com/atulmy) &bull; [Twitter](https://twitter.com/atulmy)
-
-Linto Cheeran - [GitHub](https://github.com/HedCET) &bull; [Twitter](https://twitter.com/linto_cheeran)
 
 ## Made with Meteor
 
