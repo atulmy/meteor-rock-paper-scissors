@@ -188,10 +188,8 @@ Template.gamesPlay.helpers({
             if(game.current.playAgain && typeof game.current.playAgainGameId != 'undefined' && game.current.playAgainGameId !== '') {
                 Meteor.call('gameUpdateCurrentPlayAgain', game._id, false, function(error, response) {
                     console.log('gameUpdateCurrentPlayAgain');
-                });
-                setTimeout(function() {
                     Router.go('play', {gameId: game.current.playAgainGameId});
-                }, 2000);
+                });
                 return game.current.playAgain;
             }
         }

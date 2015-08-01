@@ -20,12 +20,6 @@
                             </p>
                         </div>
 
-                    {{ else }}
-
-                        <div class="list-group-item gray">
-                            <p class="list-group-item-text text-center">Each set result will show up here.</p>
-                        </div>
-
                     {{/ if }}
 
                 {{/ each }}
@@ -41,9 +35,9 @@
         </div>
     </div>
 
-    <div class="col col-md-6 game-panel pb20">
+    <div class="col col-md-6 game-panel pb20 pt20">
         <div class="col col-sm-12 text-center">
-            <h3 class="text-center">{{ game.title }}</h3>
+            <h3 class="text-center mt0">{{ game.title }}</h3>
 
             <p class="mb0">
                 {{#if game.is.playing }}
@@ -121,26 +115,26 @@
 
                 {{#if game.is.playing }}
 
-                    <div class="col col-sm-12">
-                        <div class="col col-sm-4 text-center">
-                            <a href="#" class="button-game button-rock transition transition-grow {{# if equalTo currentlySelected "rock" }} opacity-2 {{/ if }}" selection="rock" title="Rock">
-                                <img src="/images/button-rock.png" />
+                    <div class="col col-sm-12 clearfix">
+                        <div class="col col-xs-4 text-center">
+                            <a href="#" class="button-game button-rock transition transition-grow {{# if equalTo currentlySelected "rock" }} opacity-2 {{/ if }}" selection="rock" title="Click to select Rock">
+                                <img src="/images/button-rock.png" class="img-responsive m0auto"/>
                             </a>
 
                             <p>ROCK</p>
                         </div>
 
-                        <div class="col col-sm-4 text-center">
-                            <a href="#" class="button-game button-paper transition transition-grow {{# if equalTo currentlySelected "paper" }} opacity-2 {{/ if }}" selection="paper" title="Paper">
-                                <img src="/images/button-paper.png" />
+                        <div class="col col-xs-4 text-center">
+                            <a href="#" class="button-game button-paper transition transition-grow {{# if equalTo currentlySelected "paper" }} opacity-2 {{/ if }}" selection="paper" title="Click to select Paper">
+                                <img src="/images/button-paper.png" class="img-responsive m0auto"/>
                             </a>
 
                             <p>PAPER</p>
                         </div>
 
-                        <div class="col col-sm-4 text-center">
-                            <a href="#" class="button-game button-scissors transition transition-grow {{# if equalTo currentlySelected "scissors" }} opacity-2 {{/ if }}" selection="scissors" title="Scissors">
-                                <img src="/images/button-scissors.png" />
+                        <div class="col col-xs-4 text-center">
+                            <a href="#" class="button-game button-scissors transition transition-grow {{# if equalTo currentlySelected "scissors" }} opacity-2 {{/ if }}" selection="scissors" title="Click to select Scissors">
+                                <img src="/images/button-scissors.png" class="img-responsive m0auto"/>
                             </a>
 
                             <p>SCISSORS</p>
@@ -196,7 +190,7 @@
 
     </div>
 
-    <div class="col col-md-3">
+    <div class="col col-md-3 pb20">
 
         {{# if gameChatShow }}
 

@@ -18,6 +18,12 @@ body {
 .display-none {
     display: none;
 }
+.line-height-12 {
+    line-height: 12px;
+}
+.font-0-7em {
+    font-size: 0.7em;
+}
 /* --------------- / Common --------------- */
 
 
@@ -41,17 +47,20 @@ strong {
     display: block;
     clear: both;
 }
-.line-height-12 {
-    line-height: 12px;
-}
 /* --------------- / Bootstrap Overrides --------------- */
 
 /* --------------- Margins and Paddings --------------- */
+.mt0 { margin-top: 0px; }
+.mt10 { margin-top: 10px; }
 .mt20 { margin-top: 20px; }
 .mb0 { margin-bottom: 0px; }
+.mb20 { margin-bottom: 20px; }
 .ma0 { margin: 0px; }
+.m0auto { margin: 0px auto; }
 
 .pa0 { padding: 0px; }
+.pt20 { padding-top: 20px; }
+.pt30 { padding-top: 30px; }
 .pb0 { padding-bottom: 0px; }
 .pb20 { padding-bottom: 20px; }
 /* --------------- / Margins and Paddings --------------- */
@@ -407,3 +416,24 @@ strong {
     animation-name: bounceInRight;
 }
 /* --------------- / Animations --------------- */
+
+/* --------------- Responsive Fixes --------------- */
+/* mobile */
+@media (max-width: 480px) {
+    .device-non-mobile {
+        display: none;
+    }
+    .device-mobile {
+        display: block;
+    }
+}
+/* non mobile */
+@media only screen and (min-width : 481px) {
+    .device-non-mobile {
+        display: block;
+    }
+    .device-mobile {
+        display: none;
+    }
+}
+/* --------------- / Responsive Fixes --------------- */

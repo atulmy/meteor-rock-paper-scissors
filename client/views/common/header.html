@@ -1,7 +1,7 @@
 <template name="commonHeader">
 
-    <div class="navbar navbar-default">
-        <div class="col col-sm-4 text-left">
+    <div class="navbar navbar-default device-non-mobile">
+        <div class="col col-xs-4 text-left">
             <a href="#" class="menu transition transition-grow link-game-info" title="Show Menu">
                 <span class="menu-icon glyphicon glyphicon-info-sign"></span>
 
@@ -9,18 +9,36 @@
             </a>
         </div>
 
-        <div class="col col-sm-4 text-center">
+        <div class="col col-xs-4 text-center">
             <a href="{{pathFor route='home'}}" title="Rock &bull; Paper &bull; Scissors">
                 <img src="/images/logo.small.png" alt="Rock &bull; Paper &bull; Scissors" class="transition transition-grow"/>
             </a>
         </div>
 
-        <div class="col col-sm-4 text-right">{{> loginButtons }}</div>
+        <div class="col col-xs-4 text-right">{{> loginButtons }}</div>
+    </div>
+
+    <div class="navbar navbar-default device-mobile">
+        <div class="col col-xs-12 text-center">
+            <a href="{{pathFor route='home'}}" title="Rock &bull; Paper &bull; Scissors">
+                <img src="/images/logo.small.png" alt="Rock &bull; Paper &bull; Scissors" class="transition transition-grow"/>
+            </a>
+        </div>
+
+        <div class="col col-xs-6 text-left">
+            <a href="#" class="menu transition transition-grow link-game-info" title="Show Menu">
+                <span class="menu-icon glyphicon glyphicon-info-sign"></span>
+
+                <span class="menu-text">Info</span>
+            </a>
+        </div>
+
+        <div class="col col-xs-6 text-right">{{> loginButtons }}</div>
     </div>
 
     <div class="overlay display-none" id="game-info">
         <p class="text-center"><img src="/images/graphic.png" alt="Who kills who!?" title="Who kills who!?"/></p>
-        <p class="text-center">Who kills who!?</p>
+        <p class="text-center font-0-7em">Who kills who!?</p>
         <p class="text-center line-height-12"><button type="button" class="btn btn-success button-game-info">Okay, Got it!</button></p>
         <hr/>
         <p class="text-center links line-height-12">
