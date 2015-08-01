@@ -206,7 +206,6 @@ Template.gamesPlay.helpers({
     },
     gameSets: function() {
         var game = Games.findOne({_id: Session.get('gameId')});
-        console.log(game);
         if(game) {
             if(typeof game.sets !== 'undefined' && game.sets.length > 0 && game.sets[0].playerOneSelection !== '' && game.sets[0].playerTwoSelection !== '') {
                 return game.sets;
@@ -320,7 +319,7 @@ Template.gamesPlay.events({
                 var xmax = 2;
                 var computerSelectionOptions = ['rock', 'paper', 'scissors'];
                 computerSelection = computerSelectionOptions[Math.floor( Math.random() * (xmax + 1 - xmin) + xmin )];
-                console.log(computerSelection);
+                // console.log(computerSelection);
             }
 
             Meteor.call('gameAddSet', game, selection, computerSelection, function (error, responseGameAddSet) {
