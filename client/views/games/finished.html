@@ -1,12 +1,12 @@
 <template name="gamesFinished">
 
-    <div class="col col-xs-12 col-sm-4 col-sm-offset-4">
+    <div class="col col-xs-12 col-sm-6 col-sm-offset-3">
         <h3><span class="glyphicon glyphicon-star icon-gray icon-small"></span> Finished Games</h3>
 
         {{#if gamesPaginationCount }}
             <div class="list-group">
                 {{# each gamesPagination }}
-                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to view results">
+                    <a href="{{ pathFor 'play' gameId=this._id }}" class="list-group-item" title="Click to view results">
                         <h4 class="list-group-item-heading">{{ title }}</h4>
 
                         <p class="list-group-item-text">

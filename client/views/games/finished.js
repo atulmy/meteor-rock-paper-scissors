@@ -9,7 +9,7 @@ Template.gamesFinished.helpers({
     },
 
     paginationCount: function() {
-        return parseInt(Session.get('paginationCount')) + 10;
+        return parseInt(Session.get('paginationCount')) + 6;
     }
 });
 

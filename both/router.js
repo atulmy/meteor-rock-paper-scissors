@@ -54,8 +54,5 @@ Router.route('games/finished/:count', {
     onBeforeAction: function() {
         Session.set('paginationCount', this.params.count);
         this.next();
-    },
-    onStop: function() {
-        Session.set('paginationCount', 10);
     }
 });
