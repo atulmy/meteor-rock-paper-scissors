@@ -1,15 +1,28 @@
 # RPS
 Rock &bull; Paper &bull; Scissors - Play Online
 
+- Yes, now you can play your all time favourite hand game online with your friends or with computer.
+
+- Challenge your friend or computer for game of sets (best of) ranging from 3, 5, 7 or play endless with infinite sets options.
+
+- Chat inside the game with the opponent.
+
+- Have fun!
+
+### Web
+
 Play now: http://rps.atulmy.com
 
 Alternate URL: http://bit.ly/rock-paper-scissors-online
 
-Mobile Apps:
+### Mobile
 
 [![Google Play](http://atulmy.com/attachments/images/google-play.png)](https://play.google.com/store/apps/details?id=com.idnbqo1f1hyqw2918xvuyi)
 
 ## Updates
+
+[2015-08-02]
+* Mobile app published on [Google Play Store](https://play.google.com/store/apps/details?id=com.idnbqo1f1hyqw2918xvuyi)
 
 [2015-08-01]
 * Chat option added
