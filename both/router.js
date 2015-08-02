@@ -45,3 +45,17 @@ Router.route('/play/:gameId', {
         });
     }
 });
+Router.route('games/finished/:count', {
+    name: 'gamesFinished',
+    template: 'gamesFinished',
+    waitOn: function() {
+        return [Meteor.subscribe('gamesPagination', 'finished', this.params.count)];
+    },
+    onBeforeAction: function() {
+        Session.set('paginationCount', this.params.count);
+        this.next();
+    },
+    onStop: function() {
+        Session.set('paginationCount', 10);
+    }
+});

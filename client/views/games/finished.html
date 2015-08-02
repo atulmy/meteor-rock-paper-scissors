@@ -1,0 +1,35 @@
+<template name="gamesFinished">
+
+    <div class="col col-xs-12 col-sm-4 col-sm-offset-4">
+        <h3><span class="glyphicon glyphicon-star icon-gray icon-small"></span> Finished Games</h3>
+
+        {{#if gamesPaginationCount }}
+            <div class="list-group">
+                {{# each gamesPagination }}
+                    <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to view results">
+                        <h4 class="list-group-item-heading">{{ title }}</h4>
+
+                        <p class="list-group-item-text">
+                            <span class="text-underline {{# if equalTo playerOne.id winner.id }} icon-green {{/ if }}">{{ playerOne.name }}</span>
+                            vs.
+                            <span class="text-underline {{# if equalTo playerTwo.id winner.id }} icon-green {{/ if }}">{{ playerTwo.name }}</span>
+                            &bull;
+                            Score: {{ playerOne.score }} / {{ playerTwo.score }} &bull;
+                            {{# if greaterThan bestOf 0 }} Best of {{ bestOf }} {{/ if }}
+                            {{# if lessThanOrEqualTo bestOf 0 }} Best of {{ current.set }} {{/ if }}
+                        </p>
+                    </a>
+                {{/ each }}
+
+                <a href="{{ pathFor 'gamesFinished' count=paginationCount }}" class="btn btn-warning btn-block" id="view-more"><span class="caret"></span> View More <span class="caret"></span></a>
+            </div>
+        {{ else }}
+            <div class="list-group-item gray">
+                <h4 class="list-group-item-heading">No finished game to show.</h4>
+
+                <p class="list-group-item-text">Why don't you create one and finish it like a boss <span class="glyphicon glyphicon-sunglasses"></span>?</p>
+            </div>
+        {{/if }}
+    </div>
+
+</template>

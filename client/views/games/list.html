@@ -40,7 +40,7 @@
         </div>
 
         <div role="tabpanel" class="tab-pane col col-xs-12 col-sm-4" id="game-finished">
-            <h3><span class="glyphicon glyphicon-star icon-gray icon-small"></span> Finished Games</h3>
+            <h3><span class="glyphicon glyphicon-star icon-gray icon-small"></span> Finished Games <a href="{{ pathFor 'gamesFinished' count='10' }}" class="btn btn-default btn-sm pull-right">See All <span class="glyphicon glyphicon-chevron-right"></span></a></h3>
 
             {{#if gamesFinishedCount }}
                 <div class="list-group list-group-games">
@@ -69,37 +69,5 @@
             {{/if }}
         </div>
     </div>
-
-    {{# if showOngoingGames }}
-        <div class="col col-md-4">
-            <h3><span class="glyphicon glyphicon-star icon-red icon-small"></span> Spectate Ongoing Games</h3>
-
-            {{#if gamesPlayingCount }}
-                <div class="list-group list-group-games">
-                    {{# each gamesPlaying }}
-                        <a href="{{pathFor 'play' gameId=this._id}}" class="list-group-item" title="Click to spectate this game">
-                            <h4 class="list-group-item-heading">{{ title }}</h4>
-
-                            <p class="list-group-item-text">
-                                <span class="text-underline">{{ playerOne.name }}</span> vs. <span class="text-underline">{{ playerTwo.name }}</span> &bull;
-                                Best of {{ bestOf }} &bull;
-                                Live Score: {{ playerOne.score }} / {{ playerTwo.score }}
-                            </p>
-                        </a>
-                    {{/ each }}
-                </div>
-            {{ else }}
-                <div class="list-group-item gray">
-                    <h4 class="list-group-item-heading">No ongoing game to spectate.</h4>
-
-                    <p class="list-group-item-text">Watch and learn from the real gamers</p>
-                </div>
-            {{/if }}
-        </div>
-    {{/if }}
-
-    {{#if greaterThanOrEqualTo gamesCount 5 }}
-        <a href="#" onclick="$('#form-create-title').focus();" class="display-none create-game glyphicon glyphicon-plus transition transition-grow" title="Create a game"></a>
-    {{/if }}
 
 </template>
