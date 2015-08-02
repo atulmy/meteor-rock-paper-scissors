@@ -175,11 +175,11 @@
                         <p>{{> spinner}}</p>
 
                         {{# if game.ai }}
-                            <p style="padding-top: 110px;">Waiting for computer to join...</p>
+                            <p style="padding-top: 65px;">Waiting for computer to join...</p>
                         {{ else }}
-                            <p style="padding-top: 110px;">Waiting for another player to join...</p>
+                            <p style="padding-top: 65px;">Waiting for another player to join...</p>
 
-                            <p>Share this URL: {{ currentUrl }}</p>
+                            <p>Share this URL: <code>{{ currentUrl }}</code></p>
                         {{/ if}}
                     </div>
                 {{/ if }}

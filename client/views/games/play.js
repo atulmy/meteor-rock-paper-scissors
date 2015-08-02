@@ -4,7 +4,7 @@ var intervalWait = 1000;
 // Helpers
 Template.gamesPlay.helpers({
     currentUrl: function(){
-        return 'http://'+window.location.host+Router.current().url;
+        return 'http://rps.atulmy.com/play/'+Session.get('gameId');
     },
     game: function() {
         return Games.findOne({_id: Session.get('gameId')});
