@@ -5,7 +5,9 @@ Play now: http://rps.atulmy.com
 
 Alternate URL: http://bit.ly/rock-paper-scissors-online
 
-Google Play: Coming Soon!
+Mobile Apps:
+
+[![Google Play](http://atulmy.com/attachments/images/google-play.png)](https://play.google.com/store/apps/details?id=com.idnbqo1f1hyqw2918xvuyi)
 
 ## Updates
 
