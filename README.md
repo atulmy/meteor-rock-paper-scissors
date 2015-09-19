@@ -29,6 +29,9 @@ Alternate URL: http://bit.ly/rock-paper-scissors-online
 * Each set info is now shown in game page
 * Fixed AI issue
 
+## Screenshot
+[![screenshot](http://atulmy.com/static/images/apps/rps.jpg)](http://rps.atulmy.com)
+
 ## Authors
 
 Atul Yadav - [GitHub](https://github.com/atulmy) &bull; [Twitter](https://twitter.com/atulmy)
