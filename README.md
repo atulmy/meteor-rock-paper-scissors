@@ -32,7 +32,7 @@ Alternate URL: http://bit.ly/rock-paper-scissors-online
 ## Screenshots
 [![screenshot](http://atulmy.com/static/images/apps/rps.jpg)](http://rps.atulmy.com)
 
-![screenshot](https://lh3.googleusercontent.com/GvBIw08fk7FPf6XMpwwTLnHOfr6PgDl_yiYXFWXyVyNTwDDr5NLhn_IaTlDMmap5qrc=h370) ![screenshot](https://lh3.googleusercontent.com/d21n4ipWI1ahjrWnrGEDOQMIbfkaNYhgpQSJJLiU2Vomu2LqFDlLvZVmWz0IMl5kaoU=h370) ![screenshot](https://lh3.googleusercontent.com/488B203mynXSHw6vkLCV4VqRum4X6otGq2sFUzt35Iss_tMq4xTPtHXS36X1AbiUluy_=h370) ![screenshot](https://lh3.googleusercontent.com/a30EY4x76S9HRFoBOFnwlAXh46k7wiRn94oy3Y0bNQ6kwmG4CdVsbbKImgufIS9sbA=h370)
+![screenshot](https://lh3.googleusercontent.com/GvBIw08fk7FPf6XMpwwTLnHOfr6PgDl_yiYXFWXyVyNTwDDr5NLhn_IaTlDMmap5qrc=h365) ![screenshot](https://lh3.googleusercontent.com/d21n4ipWI1ahjrWnrGEDOQMIbfkaNYhgpQSJJLiU2Vomu2LqFDlLvZVmWz0IMl5kaoU=h365) ![screenshot](https://lh3.googleusercontent.com/488B203mynXSHw6vkLCV4VqRum4X6otGq2sFUzt35Iss_tMq4xTPtHXS36X1AbiUluy_=h365) ![screenshot](https://lh3.googleusercontent.com/a30EY4x76S9HRFoBOFnwlAXh46k7wiRn94oy3Y0bNQ6kwmG4CdVsbbKImgufIS9sbA=h365)
 
 
 ## Authors
